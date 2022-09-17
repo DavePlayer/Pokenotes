@@ -1,0 +1,29 @@
+[package]
+name = "pokenotes"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# actix = "0.13.0"
+# actix-http = "3.2.2"
+actix-cors="0.6.2"
+actix-web = "4.2.1"
+# actix-web-actors = "4.1.0"
+serde = { version = "1.0.144", features = ["derive"] }
+
+# url validation
+url = { version = "2", features = ["serde"] } 
+
+juniper="0.15.10"
+juniper_actix="0.4.0"
+
+# generating random url library, usable in graphql
+[dependencies.uuid]
+version = "1.1.2"
+features = [
+    "v4",                # Lets you generate random UUIDs
+    "fast-rng",          # Use a faster (but still sufficiently random) RNG
+    "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
+]
