@@ -1,7 +1,7 @@
 use crate::graphql::Database;
 use juniper::{graphql_object, EmptyMutation, EmptySubscription, RootNode};
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 /// simple user object
 pub struct Pokemon {
     pub id: i32,
@@ -12,9 +12,9 @@ pub struct Pokemon {
 #[graphql_object(context = Database)]
 impl Pokemon {
     /// pokemon identyfier (not sure why i can't add uuid)
-    fn pokemon(context: &Database, id: Option<i32>) -> Option<&Pokemon> {
+    async fn pokemon(context: &Database, id: Option<i32>) -> Option<&Pokemon> {
         if let Some(id) = id {
-            context.get_user(&id)
+            context.get_pokemon(&id).await
         } else {
             None
         }
@@ -33,7 +33,7 @@ impl Pokemon {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 /// Pokemon game object
 pub struct Game {
     pub id: i32,
@@ -43,13 +43,17 @@ pub struct Game {
 #[graphql_object(context = Database)]
 impl Game {
     /// pokemons which occour in specific game
-    fn pokemons(&self, context: &Database) -> Vec<&Pokemon> {
-        let data: Vec<&Pokemon> = context
-            .users
-            .iter()
-            .filter(|user| user.games_occurrence.iter().any(|game| game.id == self.id))
-            .collect();
-        data
+    async fn pokemons(&self, context: &Database) -> Vec<&Pokemon> {
+        let data = context.get_all_pokemon().await;
+        if let Some(data) = data {
+            let pokemons = data
+                .iter()
+                .filter(|user| user.games_occurrence.iter().any(|game| game.id == self.id))
+                .collect();
+            return pokemons;
+        } else {
+            return vec![];
+        }
     }
     /// name of the game
     fn name(&self) -> &str {
@@ -65,11 +69,11 @@ pub struct Query;
 #[graphql_object(context = Database)]
 impl Query {
     /// pokemon array
-    fn pokemons(context: &Database) -> Option<&Vec<Pokemon>> {
-        context.get_all_users()
+    pub async fn pokemons(context: &Database) -> Option<&Vec<Pokemon>> {
+        context.get_all_pokemon().await
     }
     /// games array
-    fn games(context: &Database) -> &Vec<Game> {
+    pub fn games(context: &Database) -> &Vec<Game> {
         &context.games
     }
 }

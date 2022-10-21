@@ -6,18 +6,24 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-# actix = "0.13.0"
-# actix-http = "3.2.2"
 actix-cors="0.6.2"
 actix-web = "4.2.1"
-# actix-web-actors = "4.1.0"
 serde = { version = "1.0.144", features = ["derive"] }
 
 # url validation
 url = { version = "2", features = ["serde"] } 
 
+# GrapgQl
 juniper="0.15.10"
 juniper_actix="0.4.0"
+
+# Database
+rusqlite = { version = "0.28.0", features = ["bundled"] }
+
+# errors
+log="0.4.17"
+env_logger="0.9.0"
+error-stack="0.2.3"
 
 # generating random url library, usable in graphql
 [dependencies.uuid]
