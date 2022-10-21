@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#root {
+  @apply w-full min-h-screen bg-default-dark text-white;
+}
+
+.header-hover {
+  @apply text-default-light hover:text-default-lightest cursor-pointer;
+}
+
+.error-page-wrapper {
+  @apply w-full min-h-[calc(100vh-3rem)] text-center flex justify-center flex-wrap content-center;
+}
+
+.error-page-wrapper > div {
+  @apply w-full block;
+}
