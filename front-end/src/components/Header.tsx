@@ -20,12 +20,15 @@ const routes: Array<IRoute> = [
 
 export const Header = () => {
   return (
-    <header className="w-full min-h-[2rem] p-[1rem] bg-default-darkest">
+    <header className="w-full min-h-[2rem] p-[0.75rem] bg-default-darkest">
       <ul className="text-xs w-3/4 flex justify-between">
         {routes.map((route) => (
           <>
+            {/* PENIS - zaznaczenie używanej ścieżki */}
             <Link className="header-hover" to={`${route.pathRoute}`}>
-              <li>{route.pathName}</li>
+              <li className={window.location.href.includes(route.pathRoute as string) ? "route-selected" : ""}>
+                {route.pathName}
+              </li>
             </Link>
           </>
         ))}
