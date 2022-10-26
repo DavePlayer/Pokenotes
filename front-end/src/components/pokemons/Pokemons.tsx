@@ -1,3 +1,5 @@
+import { ElementalList } from "../Elementals/ElementalList";
+
 export const Pokemons = () => {
-  return <h1>Pokemons</h1>;
+  return (<><ElementalList /></>);
 };

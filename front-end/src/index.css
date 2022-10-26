@@ -21,3 +21,11 @@
 .error-page-wrapper > div {
   @apply w-full block;
 }
+
+.elemental-list {
+  @apply w-4/5 grid grid-cols-4 xl:grid-cols-3 gap-4 content-center place-items-center
+}
+
+.elemental-list-element {
+  @apply align-middle
+}

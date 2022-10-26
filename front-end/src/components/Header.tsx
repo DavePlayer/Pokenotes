@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 interface IRoute {
   pathName: String;
@@ -19,6 +19,9 @@ const routes: Array<IRoute> = [
 ];
 
 export const Header = () => {
+  const location = useLocation();
+  console.log(location)
+
   return (
     <header className="w-full min-h-[2rem] p-[0.75rem] bg-default-darkest">
       <ul className="text-xs w-3/4 flex justify-between">
@@ -26,7 +29,7 @@ export const Header = () => {
           <>
             {/* PENIS - zaznaczenie używanej ścieżki */}
             <Link className="header-hover" to={`${route.pathRoute}`}>
-              <li className={window.location.href.includes(route.pathRoute as string) ? "route-selected" : ""}>
+              <li className={location.pathname.replace("/","") == route.pathRoute.replace("/","") ? "route-selected" : ""}>
                 {route.pathName}
               </li>
             </Link>
