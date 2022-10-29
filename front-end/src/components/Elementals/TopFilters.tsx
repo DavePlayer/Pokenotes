@@ -1,7 +1,3 @@
-
-
-export const ElementalList = () => {
-    return (
-       <>Filters</> 
-    )
-}
+export const TopFilters = () => {
+  return <>Filters</>;
+};

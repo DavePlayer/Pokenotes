@@ -23,9 +23,12 @@
 }
 
 .elemental-list {
-  @apply w-4/5 grid grid-cols-4 xl:grid-cols-3 gap-4 content-center place-items-center
+  @apply w-full p-3 grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-4 content-center place-items-center m-auto;
 }
 
 .elemental-list-element {
-  @apply align-middle
+  @apply align-middle overflow-hidden w-fit text-center rounded-lg text-black bg-[rgba(255,255,255,0.3)];
+}
+.elemental-list-element svg {
+  @apply stroke-[1.2px] w-full;
 }

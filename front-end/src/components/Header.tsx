@@ -20,16 +20,20 @@ const routes: Array<IRoute> = [
 
 export const Header = () => {
   const location = useLocation();
-  console.log(location)
+  console.log(location);
 
   return (
     <header className="w-full min-h-[2rem] p-[0.75rem] bg-default-darkest">
       <ul className="text-xs w-3/4 flex justify-between">
-        {routes.map((route) => (
+        {routes.map((route, i) => (
           <>
             {/* PENIS - zaznaczenie używanej ścieżki */}
-            <Link className="header-hover" to={`${route.pathRoute}`}>
-              <li className={location.pathname.replace("/","") == route.pathRoute.replace("/","") ? "route-selected" : ""}>
+            <Link key={i} className="header-hover" to={`${route.pathRoute}`}>
+              <li
+                className={
+                  location.pathname.replace("/", "") == route.pathRoute.replace("/", "") ? "route-selected" : ""
+                }
+              >
                 {route.pathName}
               </li>
             </Link>
