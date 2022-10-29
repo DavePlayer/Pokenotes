@@ -6,8 +6,8 @@ interface IListElement {
   image?: String;
 }
 
-export const ElementalList: React.FC<{ tableName: String }> = ({ tableName }) => {
-  const [list, setList] = useState<Array<IListElement>>([]);
+export const ElementalList: React.FC<{ elements: Array<IListElement> }> = ({ elements }) => {
+  const [list, setList] = useState<Array<IListElement>>(elements);
   useEffect(() => {
     for (let i = 0; i < 50; i++) {
       setList((prev) => (prev = [...prev, { name: "dummy data" }]));

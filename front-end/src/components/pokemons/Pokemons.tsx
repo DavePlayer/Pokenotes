@@ -7,7 +7,7 @@ export const Pokemons = () => {
     <>
       <TopFilters />
       <ElementalPages>
-        <ElementalList tableName="pokemons" />
+        <ElementalList elements={[{ name: "dummy data" }]} />
       </ElementalPages>
     </>
   );
