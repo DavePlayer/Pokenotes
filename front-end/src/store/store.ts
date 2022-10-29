@@ -1,9 +1,8 @@
-import { PageMangerReducer } from './reducers/pageManager'
+import { ElementalListReducer } from './reducers/elementalElements'
 import { configureStore } from "@reduxjs/toolkit"
-import { ResultType } from '@remix-run/router/dist/utils'
 
 const reducer = {
-    PageManager: PageMangerReducer
+    elementalList: ElementalListReducer
 }
 export const store = configureStore({
     reducer

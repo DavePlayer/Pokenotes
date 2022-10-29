@@ -26,18 +26,13 @@ export const Header = () => {
     <header className="w-full min-h-[2rem] p-[0.75rem] bg-default-darkest">
       <ul className="text-xs w-3/4 flex justify-between">
         {routes.map((route, i) => (
-          <>
-            {/* PENIS - zaznaczenie używanej ścieżki */}
-            <Link key={i} className="header-hover" to={`${route.pathRoute}`}>
-              <li
-                className={
-                  location.pathname.replace("/", "") == route.pathRoute.replace("/", "") ? "route-selected" : ""
-                }
-              >
-                {route.pathName}
-              </li>
-            </Link>
-          </>
+          <Link key={i} className="header-hover" to={`${route.pathRoute}`}>
+            <li
+              className={location.pathname.replace("/", "") == route.pathRoute.replace("/", "") ? "route-selected" : ""}
+            >
+              {route.pathName}
+            </li>
+          </Link>
         ))}
       </ul>
     </header>
