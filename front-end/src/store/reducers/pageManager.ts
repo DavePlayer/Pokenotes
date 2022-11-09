@@ -8,10 +8,10 @@ interface IPageManager {
 }
 
 const initialPageManager: IPageManager = {
-    selectedPage: 0,
-    length: 1,
-    startPage: 0,
-    endPage: 1
+    selectedPage: 1,
+    length: 7,
+    startPage: 1,
+    endPage: 5
 }
 
 interface IInitPageManager {

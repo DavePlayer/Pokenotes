@@ -2,12 +2,12 @@ import { ElementalListReducer } from './reducers/elementalElements'
 import { configureStore } from "@reduxjs/toolkit"
 import { PageManagerReducer } from './reducers/pageManager'
 
-const reducer = {
-    elementalList: ElementalListReducer,
-    pageManager: PageManagerReducer
-}
 export const store = configureStore({
-    reducer
+    reducer: {
+        elementalList: ElementalListReducer,
+        pageManager: PageManagerReducer
+    }
 })
 
-export type storeState = ReturnType<() => typeof reducer>
+export type storeState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch

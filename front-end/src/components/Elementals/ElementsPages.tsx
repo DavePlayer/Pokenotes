@@ -1,23 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { storeState } from "./../../store/store";
+import { PageManagerActions } from "./../../store/actionTypes"
 
 export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [pageManager, setPageManager] = useState({
-    selectedPage: parseInt(searchParams.get("p") as string) || 0,
-    length: 5,
-    startPage: 0,
-    endPage: 1,
-  });
-  console.log(pageManager);
+  // const [pageManager, setPageManager] = useState({
+  //   selectedPage: parseInt(searchParams.get("p") as string) || 0,
+  //   length: 5,
+  //   startPage: 0,
+  //   endPage: 1,
+  // });
+  // move pagemanager to redux you aidiot
+  const pageManager = useSelector((store: storeState) => store.pageManager)
+  const dispatch = useDispatch()
+
+  const nextPage = () => {
+    dispatch({ type: PageManagerActions.NEXT })
+  }
+  const prevPage = () => {
+    dispatch({ type: PageManagerActions.PREV })
+  }
+  const lastPage = () => {
+    dispatch({ type: PageManagerActions.LAST })
+  }
+  const firstPage = () => {
+    dispatch({ type: PageManagerActions.FIRST })
+  }
+  const pageByIndex = (index: number) => {
+    dispatch({ type: PageManagerActions.INDEX, payload: index })
+  }
   useEffect(() => {
     console.log("page updated");
   }, [pageManager.selectedPage]);
 
-  // move pagemanager to redux you aidiot
-  // const pageManager = useSelector
 
   return (
     <>
@@ -28,10 +45,7 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
           onClick={() =>
             setSearchParams((prev) => {
               prev.set("p", `${1}`);
-              setPageManager((prev) => {
-                prev.selectedPage = 0;
-                return prev;
-              });
+              firstPage();
               return prev;
             })
           }
@@ -44,10 +58,6 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
           onClick={() =>
             setSearchParams((prev) => {
               prev.set("p", `${parseInt(prev.get("p") as string) - 1}`);
-              setPageManager((prevv) => {
-                prevv.selectedPage = parseInt(prev.get("p") as string) - 1;
-                return prevv;
-              });
               return prev;
             })
           }
@@ -66,6 +76,7 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
               key={i}
               onClick={() =>
                 setSearchParams((prev) => {
+                  // indexed
                   setPageManager((prev) => {
                     prev.selectedPage = i;
                     return prev;
@@ -85,10 +96,7 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
           onClick={() =>
             setSearchParams((prev) => {
               prev.set("p", `${parseInt(prev.get("p") as string) + 1}`);
-              setPageManager((prevv) => {
-                prevv.selectedPage = parseInt(prev.get("p") as string) - 1;
-                return prevv;
-              });
+              nextPage()
               return prev;
             })
           }
@@ -100,11 +108,8 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
           disabled={pageManager.selectedPage == pageManager.length - 1 ? true : false}
           onClick={() =>
             setSearchParams((prev) => {
-              setPageManager((prevv) => {
-                prevv.selectedPage = prevv.length - 1;
-                prev.set("p", `${prevv.length}`);
-                return prevv;
-              });
+              lastPage()
+              prev.set("p", `${pageManager.endPage}`);
               return prev;
             })
           }
@@ -120,10 +125,7 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
           onClick={() =>
             setSearchParams((prev) => {
               prev.set("p", `${1}`);
-              setPageManager((prev) => {
-                prev.selectedPage = 0;
-                return prev;
-              });
+              firstPage()
               return prev;
             })
           }
