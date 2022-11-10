@@ -6,7 +6,8 @@ export const store = configureStore({
     reducer: {
         elementalList: ElementalListReducer,
         pageManager: PageManagerReducer
-    }
+    },
+    devTools: true
 })
 
 export type storeState = ReturnType<typeof store.getState>

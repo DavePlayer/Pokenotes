@@ -32,8 +32,10 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
     dispatch({ type: PageManagerActions.INDEX, payload: index })
   }
   useEffect(() => {
-    console.log("page updated");
-  }, [pageManager.selectedPage]);
+    const index = parseInt(searchParams.get("p")!)
+    console.log("page updated: ", index);
+    pageByIndex(index || 1)
+  }, [searchParams]);
 
 
   return (
@@ -64,12 +66,13 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
         >
           Prev
         </button>
-        {[...Array(pageManager.length)].map((sth, i) => {
+        {[...Array(pageManager.endPage - pageManager.startPage + 1).keys()].map(x => x + pageManager.startPage).map((sth, i) => {
+          sth -= 1
           return (
             <button
-              className={`page-selector numeric ${parseInt(searchParams.get("p") as string) == i + 1
+              className={`page-selector numeric ${parseInt(searchParams.get("p") as string) == sth + 1
                 ? "selected"
-                : searchParams.get("p") == null && i == 0
+                : searchParams.get("p") == null && sth == 0
                   ? "selected"
                   : ""
                 }`}
@@ -77,16 +80,12 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
               onClick={() =>
                 setSearchParams((prev) => {
                   // indexed
-                  setPageManager((prev) => {
-                    prev.selectedPage = i;
-                    return prev;
-                  });
-                  prev.set("p", `${i + 1}`);
+                  prev.set("p", `${sth + 1}`);
                   return prev;
                 })
               }
             >
-              {i + 1}
+              {sth + 1}
             </button>
           );
         })}
@@ -108,8 +107,7 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
           disabled={pageManager.selectedPage == pageManager.length - 1 ? true : false}
           onClick={() =>
             setSearchParams((prev) => {
-              lastPage()
-              prev.set("p", `${pageManager.endPage}`);
+              prev.set("p", `${pageManager.length}`);
               return prev;
             })
           }
@@ -138,10 +136,6 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
           onClick={() =>
             setSearchParams((prev) => {
               prev.set("p", `${parseInt(prev.get("p") as string) - 1}`);
-              setPageManager((prevv) => {
-                prevv.selectedPage = parseInt(prev.get("p") as string) - 1;
-                return prevv;
-              });
               return prev;
             })
           }
@@ -160,10 +154,6 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
               key={i}
               onClick={() =>
                 setSearchParams((prev) => {
-                  setPageManager((prev) => {
-                    prev.selectedPage = i;
-                    return prev;
-                  });
                   prev.set("p", `${i + 1}`);
                   return prev;
                 })
@@ -175,14 +165,10 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
         })}
         <button
           className="page-selector"
-          disabled={pageManager.selectedPage == pageManager.length - 1 ? true : false}
+          disabled={pageManager.selectedPage >= pageManager.length ? true : false}
           onClick={() =>
             setSearchParams((prev) => {
               prev.set("p", `${parseInt(prev.get("p") as string) + 1}`);
-              setPageManager((prevv) => {
-                prevv.selectedPage = parseInt(prev.get("p") as string) - 1;
-                return prevv;
-              });
               return prev;
             })
           }
@@ -191,14 +177,10 @@ export const ElementalPages: React.FC<{ children: React.ReactNode }> = ({ childr
         </button>
         <button
           className="page-selector"
-          disabled={pageManager.selectedPage == pageManager.length - 1 ? true : false}
+          disabled={pageManager.selectedPage == pageManager.length ? true : false}
           onClick={() =>
             setSearchParams((prev) => {
-              setPageManager((prevv) => {
-                prevv.selectedPage = prevv.length - 1;
-                prev.set("p", `${prevv.length}`);
-                return prevv;
-              });
+              prev.set("p", `${pageManager.length - 1}`);
               return prev;
             })
           }

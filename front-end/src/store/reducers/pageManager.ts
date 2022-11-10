@@ -4,13 +4,15 @@ interface IPageManager {
     selectedPage: number,
     startPage: number,
     endPage: number,
+    maxElements: number,
     length: number
 }
 
-const initialPageManager: IPageManager = {
+let initialPageManager: IPageManager = {
     selectedPage: 1,
     length: 7,
     startPage: 1,
+    maxElements: 5,
     endPage: 5
 }
 
@@ -41,12 +43,24 @@ export type Action = IInitPageManager | INextPage | IFirstPage | IPrevPage | ILa
 export const PageManagerReducer = (state: IPageManager = initialPageManager, action: Action) => {
     console.log("changing page manager reducer")
     switch (action.type) {
+        case actionType.INDEX:
+            const diffrence = Math.ceil((state.length - state.maxElements))
+            let start = action.payload - diffrence
+            start = start > 0 ? start : 1
+            let end = action.payload + diffrence
+            end = end <= state.length ? end : state.length
+            console.log(diffrence, "updating by index: ", `${start}  ${action.payload}  ${end}`)
+            return {
+                ...state,
+                selectedPage: action.payload,
+                startPage: start,
+                endPage: end
+            }
         case actionType.INIT:
         case actionType.NEXT:
         case actionType.PREV:
         case actionType.FIRST:
         case actionType.LAST:
-        case actionType.INDEX:
         default:
             return state
     }
