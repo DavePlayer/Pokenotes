@@ -9,5 +9,6 @@ export enum PageManagerActions {
     PREV = "prevPage",
     FIRST = "firstPage",
     LAST = "lastPage",
-    INDEX = "initPageManager"
+    INDEX = "initPageManager",
+    SETLENGTH = "setLength",
 }

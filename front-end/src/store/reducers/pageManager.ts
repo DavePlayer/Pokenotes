@@ -36,8 +36,12 @@ interface IIndexedPage {
     type: actionType.INDEX,
     payload: number
 }
+interface IsetPagesAmount {
+    type: actionType.SETLENGTH,
+    payload: number
+}
 
-export type Action = IInitPageManager | INextPage | IFirstPage | IPrevPage | ILastPage | IIndexedPage
+export type Action = IInitPageManager | INextPage | IFirstPage | IPrevPage | ILastPage | IIndexedPage | IsetPagesAmount
 
 
 export const PageManagerReducer = (state: IPageManager = initialPageManager, action: Action) => {
@@ -55,6 +59,19 @@ export const PageManagerReducer = (state: IPageManager = initialPageManager, act
                 selectedPage: action.payload,
                 startPage: start,
                 endPage: end
+            }
+        case actionType.SETLENGTH:
+            const maxElementsToDisplay = 40;
+            const length = Math.floor(action.payload / maxElementsToDisplay)
+            let maxElements = length
+            let endPage = 0
+            if (length > 5) maxElements = 5
+            endPage = maxElements
+            return {
+                ...state,
+                length,
+                maxElements,
+                endPage
             }
         case actionType.INIT:
         case actionType.NEXT:

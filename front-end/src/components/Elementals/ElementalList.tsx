@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
 import { TagIcon } from "@heroicons/react/outline";
-import { useSelector } from "react-redux";
-import { storeState } from "../../store/store";
 import { IList } from "../../store/reducers/elementalElements";
 
-export const ElementalList: React.FC = () => {
-  const list = useSelector((store: storeState) => store.elementalList);
+export const ElementalList: React.FC<{ list: Array<IList> }> = ({ list }) => {
+
   return (
     <>
       <section className="elemental-list">
