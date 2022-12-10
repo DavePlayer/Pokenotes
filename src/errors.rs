@@ -2,8 +2,8 @@ use std::{error::Error, fmt};
 
 #[derive(Debug)]
 pub enum DatabaseError {
-    InitializingError,
     EstablishConnectionError(String),
+    ExecuteSQL(String, String),
     Other,
 }
 

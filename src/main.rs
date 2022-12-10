@@ -7,6 +7,10 @@ use actix_web::{
     web::{self, Data},
     App, HttpServer, Responder,
 };
+use clap::Parser;
+use colored::Colorize;
+use database::Database;
+use dotenv::dotenv;
 use serde::Serialize;
 
 mod database;
@@ -24,9 +28,43 @@ async fn home() -> std::io::Result<impl Responder> {
     Ok(web::Json(obj))
 }
 
+/// Pokenotes http handler
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Should fill database with dummy data?
+    #[arg(long)]
+    baka: bool,
+
+    /// Should remove database file?
+    #[arg(long)]
+    dbreset: bool,
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    println!("Hello, world!");
+    dotenv().ok();
+    let args = Args::parse();
+
+    // parsing app flags
+    if args.dbreset {
+        println!("{}", "reseting database".yellow());
+        match Database::reset_db() {
+            Err(err) => {
+                println!("{:?}", err);
+            }
+            _ => {}
+        }
+    }
+    if args.baka {
+        println!("{}", "filling database with dummy data".yellow());
+        match Database::fill_dummy_data().await {
+            Err(err) => {
+                println!("{err:?}");
+            }
+            _ => {}
+        }
+    }
     HttpServer::new(move || {
         App::new()
             .service(home)
