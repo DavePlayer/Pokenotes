@@ -3,7 +3,6 @@ use crate::graphql::schemas::{Game, Pokemon};
 use colored::Colorize;
 use directories::ProjectDirs;
 use error_stack::{IntoReport, Report, Result, ResultExt};
-use std::fs::create_dir;
 use std::path::PathBuf;
 use surrealdb::{Datastore, Session};
 
@@ -176,6 +175,10 @@ impl Database {
                     }
                 }
             } else {
+                println!(
+                    "{}",
+                    "error may accour in development or in fresh start".blue()
+                );
                 return Err(
                     Report::new(DatabaseError::Other).attach_printable("db file does not exist")
                 );

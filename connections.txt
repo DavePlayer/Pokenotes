@@ -1,0 +1,8 @@
+query samplePokeAPIquery {
+	pokemon_v2_pokemongameindex {
+  		pokemon_v2_version {
+        name
+        
+      }
+  }
+}
