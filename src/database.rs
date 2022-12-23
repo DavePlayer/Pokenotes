@@ -1,4 +1,5 @@
-use crate::errors::{self, DatabaseError};
+use crate::config::*;
+use crate::errors::{self, AnyError, ConfigError, DatabaseError};
 use crate::graphql::schemas::{Game, Pokemon};
 use colored::Colorize;
 use directories::ProjectDirs;
@@ -77,18 +78,30 @@ impl Database {
         });
     }
 
-    pub async fn fill_dummy_data() -> Result<(), DatabaseError> {
-        let name = std::env::var("DBFILE")
-            .into_report()
-            .attach_printable(format!("couldn't read DBFILE from .env"))
-            .change_context(DatabaseError::Other)?;
-        let path =
-            match ProjectDirs::from("io", "OmegaLoveIssac", "pokenotes") {
-                Some(val) => Ok(val),
-                None => Err(Report::new(DatabaseError::Other)
-                    .attach_printable("couldn't find project folder")),
-            }?;
-        let path = path.config_dir().join(name);
+    pub async fn fill_dummy_data() -> Result<(), AnyError> {
+        let path = match ProjectDirs::from("io", "OmegaLoveIssac", "pokenotes") {
+            Some(val) => Ok(val),
+            None => Err(Report::new(AnyError::DatabaseError(DatabaseError::Other))
+                .attach_printable("couldn't find project folder")),
+        }?;
+        let config_file_path = &path.config_dir().join("config.yml");
+        let config_file_path = config_file_path.to_str();
+        let config_file_path = match config_file_path {
+            Some(val) => val,
+            None => {
+                let err = Report::new(AnyError::ConfigError(ConfigError::Other))
+                    .attach_printable("error when adding config.yaml to config folder path");
+                return Err(err);
+            }
+        };
+        let config = match Config::new(config_file_path) {
+            Ok(val) => val,
+            Err(err) => {
+                let err = err.change_context(AnyError::ConfigError(ConfigError::Other));
+                return Err(err);
+            }
+        };
+        let path = path.config_dir().join(config.dbFilePath);
         let path = path
             .into_os_string()
             .into_string()
@@ -100,9 +113,11 @@ impl Database {
         let connection = Datastore::new(&format!("file://{path}"))
             .await
             .into_report()
-            .attach_printable(format!("error in database"))
-            .change_context(errors::DatabaseError::EstablishConnectionError(
-                "couldn't establish connection with db".to_string(),
+            .attach_printable(format!("couldn't establish connection to database: {path}"))
+            .change_context(AnyError::DatabaseError(
+                errors::DatabaseError::EstablishConnectionError(
+                    "couldn't establish connection with db".to_string(),
+                ),
             ))?;
 
         let session = Session::for_db("sth", "pokemons");
@@ -113,10 +128,10 @@ impl Database {
             .await
             .into_report()
             .attach_printable(format!("error with database"))
-            .change_context(errors::DatabaseError::ExecuteSQL(
+            .change_context(AnyError::DatabaseError(errors::DatabaseError::ExecuteSQL(
                 "couldn't CREATE pokemon in table".into(),
                 sql.to_string(),
-            ))?;
+            )))?;
         println!("{results:?}");
 
         let sql = "SELECT * FROM pokemon";
@@ -125,10 +140,10 @@ impl Database {
             .await
             .into_report()
             .attach_printable(format!("error with database"))
-            .change_context(errors::DatabaseError::ExecuteSQL(
+            .change_context(AnyError::DatabaseError(errors::DatabaseError::ExecuteSQL(
                 "couldn't CREATE pokemon in table".into(),
                 sql.to_string(),
-            ))?;
+            )))?;
         println!("{results:?}");
         Ok(())
     }
@@ -177,7 +192,7 @@ impl Database {
             } else {
                 println!(
                     "{}",
-                    "error may accour in development or in fresh start".blue()
+                    "errors may accour in development or on fresh start".blue()
                 );
                 return Err(
                     Report::new(DatabaseError::Other).attach_printable("db file does not exist")

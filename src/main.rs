@@ -13,6 +13,7 @@ use database::Database;
 use dotenv::dotenv;
 use serde::Serialize;
 
+mod config;
 mod database;
 mod errors;
 mod graphql;

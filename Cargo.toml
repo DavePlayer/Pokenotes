@@ -9,6 +9,7 @@ edition = "2021"
 actix-cors="0.6.2"
 actix-web = "4.2.1"
 serde = { version = "1.0.144", features = ["derive"] }
+serde_yaml = "0.9.16"
 clap = {version = "4.0.29", features = [ "derive" ]}
 directories = "4.0.1"
 
