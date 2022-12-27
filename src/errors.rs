@@ -10,6 +10,7 @@ pub enum AnyError {
 pub enum DatabaseError {
     EstablishConnectionError(String),
     ExecuteSQL(String, String),
+    ReadDummyData,
     Other,
 }
 

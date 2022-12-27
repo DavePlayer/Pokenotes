@@ -121,29 +121,37 @@ impl Database {
 
         let session = Session::for_db("sth", "pokemons");
 
-        let sql = "CREATE pokemon SET name='Bulbasaur'";
-        let results = connection
-            .execute(sql, &session, None, false)
-            .await
-            .into_report()
-            .attach_printable(format!("error with database"))
-            .change_context(AnyError::DatabaseError(errors::DatabaseError::ExecuteSQL(
-                "couldn't CREATE pokemon in table".into(),
-                sql.to_string(),
-            )))?;
-        println!("{results:?}");
+        // let sql = "CREATE pokemon SET name='Bulbasaur'";
+        // let results = connection
+        //     .execute(sql, &session, None, false)
+        //     .await
+        //     .into_report()
+        //     .attach_printable(format!("error with database"))
+        //     .change_context(AnyError::DatabaseError(errors::DatabaseError::ExecuteSQL(
+        //         "couldn't CREATE pokemon in table".into(),
+        //         sql.to_string(),
+        //     )))?;
+        // println!("{results:?}");
+        let baka_data_string = std::fs::read_to_string("./baka_data.yaml")
+        .into_report()
+        .change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))
+        .attach_printable(format!["couldn't parse file to string: {}", "./baka_data.yaml"])?;
 
-        let sql = "SELECT * FROM pokemon";
-        let results = connection
-            .execute(sql, &session, None, false)
-            .await
-            .into_report()
-            .attach_printable(format!("error with database"))
-            .change_context(AnyError::DatabaseError(errors::DatabaseError::ExecuteSQL(
-                "couldn't CREATE pokemon in table".into(),
-                sql.to_string(),
-            )))?;
-        println!("{results:?}");
+        // let baka_data = serde_yaml::from_str(&baka_data_string);
+
+        // must refactor graphql schemas
+
+        // let sql = "SELECT * FROM pokemon";
+        // let results = connection
+        //     .execute(sql, &session, None, false)
+        //     .await
+        //     .into_report()
+        //     .attach_printable(format!("error with database"))
+        //     .change_context(AnyError::DatabaseError(errors::DatabaseError::ExecuteSQL(
+        //         "couldn't CREATE pokemon in table".into(),
+        //         sql.to_string(),
+        //     )))?;
+        // println!("{results:?}");
         Ok(())
     }
     pub fn reset_db() -> Result<(), AnyError> {

@@ -9,6 +9,12 @@ data:
   pokemon_v2_pokemon:
     - id: 1
       name: bulbasaur
+      pokedexes: []
+      genders: []
+      moves: []
+      abilities: []
+      types: []
+      locations: []
       stats:
         - base_stat: 45
           name: hp
@@ -24,6 +30,11 @@ data:
           name: speed
     - id: 2
       name: ivysaur
+      genders: []
+      moves: []
+      abilities: []
+      types: []
+      locations: []
       stats:
         - base_stat: 60
           name: hp
@@ -39,6 +50,11 @@ data:
           name: speed
     - id: 3
       name: venusaur
+      genders: []
+      moves: []
+      abilities: []
+      types: []
+      locations: []
       stats:
         - base_stat: 80
           name: hp
@@ -54,6 +70,11 @@ data:
           name: speed
     - id: 4
       name: charmander
+      genders: []
+      moves: []
+      abilities: []
+      types: []
+      locations: []
       stats:
         - base_stat: 39
           name: hp
@@ -69,6 +90,11 @@ data:
           name: speed
     - id: 5
       name: charmeleon
+      genders: []
+      moves: []
+      abilities: []
+      types: []
+      locations: []
       stats:
         - base_stat: 58
           name: hp
@@ -84,6 +110,11 @@ data:
           name: speed
     - id: 6
       name: charizard
+      genders: []
+      moves: []
+      abilities: []
+      types: []
+      locations: []
       stats:
         - base_stat: 78
           name: hp
@@ -99,6 +130,11 @@ data:
           name: speed
     - id: 7
       name: squirtle
+      genders: []
+      moves: []
+      abilities: []
+      types: []
+      locations: []
       stats:
         - base_stat: 44
           name: hp
@@ -114,6 +150,11 @@ data:
           name: speed
     - id: 8
       name: wartortle
+      genders: []
+      moves: []
+      abilities: []
+      types: []
+      locations: []
       stats:
         - base_stat: 59
           name: hp
@@ -129,6 +170,11 @@ data:
           name: speed
     - id: 9
       name: blastoise
+      genders: []
+      moves: []
+      abilities: []
+      types: []
+      locations: []
       stats:
         - base_stat: 79
           name: hp
@@ -144,6 +190,11 @@ data:
           name: speed
     - id: 10
       name: caterpie
+      genders: []
+      moves: []
+      abilities: []
+      types: []
+      locations: []
       stats:
         - base_stat: 45
           name: hp
