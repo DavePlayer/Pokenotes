@@ -10,7 +10,6 @@ use actix_web::{
 use clap::Parser;
 use colored::Colorize;
 use database::Database;
-use dotenv::dotenv;
 use serde::Serialize;
 
 mod config;
@@ -44,7 +43,6 @@ struct Args {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    dotenv().ok();
     let args = Args::parse();
 
     // parsing app flags

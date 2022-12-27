@@ -1,31 +1,40 @@
 use crate::errors::ConfigError;
+use colored::Colorize;
 use directories::ProjectDirs;
 use error_stack::{IntoReport, Report, Result, ResultExt};
 use serde::{Deserialize, Serialize};
-use std::{io::Write, process::Termination};
+use std::{io::Write, path::PathBuf};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Config {
     pub dbFilePath: String,
+    pub configDirPath: String,
 }
 
 impl Config {
-    pub fn new(path: &str) -> Result<Config, ConfigError> {
-        let file_string = std::fs::read_to_string(path);
+    fn parse_database_file(path: &str) -> PathBuf {
+        let path = PathBuf::from(path);
+        let db_path = path.join("config.yaml");
+        db_path
+    }
+    pub fn new(config_dir_path: &str) -> Result<Config, ConfigError> {
+        let db_path = Config::parse_database_file(config_dir_path);
+        let db_path = db_path.to_str().unwrap_or("");
+        let file_string = std::fs::read_to_string(db_path);
         let mut err_type: Option<std::io::ErrorKind> = None;
         if let Err(err) = &file_string {
             err_type = Some(err.kind());
         }
         let file_string = file_string
             .into_report()
-            .attach_printable("can't parse file to string")
+            .attach_printable(format!("can't parse file to string ({})", db_path))
             .change_context(ConfigError::InvalidConfigPath);
         let file_string = match file_string {
             Ok(val) => val,
             Err(err) => {
                 println!("{:?}", err);
                 if err_type.unwrap() == std::io::ErrorKind::NotFound {
-                    print!("\nMost likely the config.yaml does not exist. Do you want me to create it at {}? (yes/_): ", path);
+                    print!("\nMost likely the config.yaml does not exist. Do you want me to create it at {}? (yes/_): ", db_path);
                     std::io::stdout().flush().unwrap();
                     let mut input: String = format!("");
                     let project_path = match ProjectDirs::from("io", "OmegaLoveIssac", "pokenotes")
@@ -45,6 +54,7 @@ impl Config {
                     }
                     let example_config = Config {
                         dbFilePath: project_path.unwrap().to_string(),
+                        configDirPath: config_dir_path.to_string(),
                     };
                     let example_config = serde_yaml::to_string(&example_config)
                         .into_report()
@@ -54,8 +64,8 @@ impl Config {
                         Ok(_) => {
                             input = input.trim().to_string();
                             if input == String::from("yes") {
-                                println!("creating config.yaml at {}", path);
-                                std::fs::write(path, &example_config)
+                                println!("{}{}","creating config.yaml at ".cyan(), db_path.cyan());
+                                std::fs::write(db_path, &example_config)
                                     .into_report()
                                     .change_context(ConfigError::WritingError)?;
                             } else {

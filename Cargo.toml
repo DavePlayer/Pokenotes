@@ -28,7 +28,6 @@ surrealdb = "1.0.0-beta.8"
 log="0.4.17"
 env_logger="0.10.0"
 error-stack="0.2.3"
-dotenv = "0.15.0"
 colored = "2.0.0"
 
 # generating random url library, usable in graphql

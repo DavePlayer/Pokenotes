@@ -4,7 +4,8 @@ use crate::graphql::schemas::{Game, Pokemon};
 use colored::Colorize;
 use directories::ProjectDirs;
 use error_stack::{IntoReport, Report, Result, ResultExt};
-use std::path::PathBuf;
+use serde::de::value::Error;
+use std::path::{PathBuf, Path};
 use surrealdb::{Datastore, Session};
 
 // #[derive(Default)]
@@ -78,15 +79,15 @@ impl Database {
         });
     }
 
-    pub async fn fill_dummy_data() -> Result<(), AnyError> {
+    fn get_config() -> Result<Config, AnyError> {
+
         let path = match ProjectDirs::from("io", "OmegaLoveIssac", "pokenotes") {
             Some(val) => Ok(val),
             None => Err(Report::new(AnyError::DatabaseError(DatabaseError::Other))
                 .attach_printable("couldn't find project folder")),
         }?;
-        let config_file_path = &path.config_dir().join("config.yml");
-        let config_file_path = config_file_path.to_str();
-        let config_file_path = match config_file_path {
+        let config_file_path:PathBuf = path.config_dir().to_path_buf();
+        let config_file_path = match config_file_path.to_str() {
             Some(val) => val,
             None => {
                 let err = Report::new(AnyError::ConfigError(ConfigError::Other))
@@ -101,14 +102,12 @@ impl Database {
                 return Err(err);
             }
         };
-        let path = path.config_dir().join(config.dbFilePath);
-        let path = path
-            .into_os_string()
-            .into_string()
-            .unwrap_or("".to_string())
-            .chars()
-            .filter(|l| *l != '"')
-            .collect::<String>();
+        Ok(config)
+    }
+
+    pub async fn fill_dummy_data() -> Result<(), AnyError> {
+        let config = Database::get_config()?;
+        let path = config.dbFilePath;
         println!("{}{}", "connecting to database: ".cyan(), path.cyan());
         let connection = Datastore::new(&format!("file://{path}"))
             .await
@@ -147,59 +146,36 @@ impl Database {
         println!("{results:?}");
         Ok(())
     }
-    pub fn reset_db() -> Result<(), errors::DatabaseError> {
-        if let Some(proj_dir) = ProjectDirs::from("io", "OmegaLoveIssac", "pokenotes") {
-            let config_dir = proj_dir.config_dir();
-            let name = std::env::var("DBFILE").unwrap_or("database.db".to_string());
-            if config_dir.exists() == false {
-                println!("craeting config direcotries: {}", config_dir.display());
-                match std::fs::create_dir(config_dir).into_report() {
-                    Ok(_) => {
-                        println!(
-                            "{}: {}",
-                            "craeted new config directory".yellow(),
-                            config_dir.display()
-                        )
-                    }
-                    Err(err) => {
-                        return Err(err.change_context(DatabaseError::Other).attach_printable(
-                            format!("couldn't craete condig directory: {}", config_dir.display()),
-                        ));
-                    }
-                }
-            }
-            let db_path: PathBuf = config_dir.join(std::path::Path::new(&name));
+    pub fn reset_db() -> Result<(), AnyError> {
+            let config = Database::get_config()?;
+            let db_path = Path::new(&config.dbFilePath);
             if db_path.exists() {
                 match std::fs::remove_dir_all(&db_path).into_report() {
                     Ok(_) => {
                         println!(
                             "{}{}{}",
                             "removing ".on_red(),
-                            db_path.into_os_string().into_string().unwrap().on_red(),
+                            config.dbFilePath.on_red(),
                             " database".on_red()
                         );
                         return Ok(());
                     }
                     Err(err) => {
                         return Err(err
-                            .change_context(errors::DatabaseError::Other)
+                            .change_context(errors::AnyError::DatabaseError(DatabaseError::Other)))
                             .attach_printable(format!(
                                 "couldn't remove database file: {}",
-                                db_path.display()
-                            )));
+                                config.dbFilePath
+                            ));
                     }
                 }
             } else {
                 println!(
                     "{}",
-                    "errors may accour in development or on fresh start".blue()
+                    "db file does not exist. reset was not necessary".blue()
                 );
-                return Err(
-                    Report::new(DatabaseError::Other).attach_printable("db file does not exist")
-                );
+                    Ok(())
             }
-        }
-        Err(Report::new(DatabaseError::Other).attach_printable("problem with config folder"))
     }
 
     pub async fn get_game(&self, id: &i32) -> Option<&Pokemon> {
