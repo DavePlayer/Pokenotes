@@ -1,11 +1,9 @@
 use crate::config::*;
-use crate::errors::{self, AnyError, ConfigError, DatabaseError};
+use crate::errors::{self, AnyError, DatabaseError};
 use crate::graphql::schemas::{Game, Pokemon};
 use colored::Colorize;
-use directories::ProjectDirs;
-use error_stack::{IntoReport, Report, Result, ResultExt};
-use serde::de::value::Error;
-use std::path::{PathBuf, Path};
+use error_stack::{IntoReport, Result, ResultExt};
+use std::path::Path;
 use surrealdb::{Datastore, Session};
 
 // #[derive(Default)]
@@ -18,13 +16,9 @@ pub struct Database {
 }
 
 impl Database {
-    pub async fn new() -> Result<Database, errors::DatabaseError> {
-        let path = std::env::var("DBFILE")
-            .into_report()
-            .attach_printable(format!("error in database"))
-            .change_context(errors::DatabaseError::EstablishConnectionError(
-                "DBFILE in .env is wrong somehow".into(),
-            ))?;
+    pub async fn new() -> Result<Database, AnyError> {
+        let config = Config::get_config()?;
+        let path = config.dbFilePath;
 
         let mut users: Vec<Pokemon> = Vec::new();
         let mut games: Vec<Game> = Vec::new();
@@ -79,34 +73,9 @@ impl Database {
         });
     }
 
-    fn get_config() -> Result<Config, AnyError> {
-
-        let path = match ProjectDirs::from("io", "OmegaLoveIssac", "pokenotes") {
-            Some(val) => Ok(val),
-            None => Err(Report::new(AnyError::DatabaseError(DatabaseError::Other))
-                .attach_printable("couldn't find project folder")),
-        }?;
-        let config_file_path:PathBuf = path.config_dir().to_path_buf();
-        let config_file_path = match config_file_path.to_str() {
-            Some(val) => val,
-            None => {
-                let err = Report::new(AnyError::ConfigError(ConfigError::Other))
-                    .attach_printable("error when adding config.yaml to config folder path");
-                return Err(err);
-            }
-        };
-        let config = match Config::new(config_file_path) {
-            Ok(val) => val,
-            Err(err) => {
-                let err = err.change_context(AnyError::ConfigError(ConfigError::Other));
-                return Err(err);
-            }
-        };
-        Ok(config)
-    }
 
     pub async fn fill_dummy_data() -> Result<(), AnyError> {
-        let config = Database::get_config()?;
+        let config = Config::get_config()?;
         let path = config.dbFilePath;
         println!("{}{}", "connecting to database: ".cyan(), path.cyan());
         let connection = Datastore::new(&format!("file://{path}"))
@@ -155,7 +124,7 @@ impl Database {
         Ok(())
     }
     pub fn reset_db() -> Result<(), AnyError> {
-            let config = Database::get_config()?;
+            let config = Config::get_config()?;
             let db_path = Path::new(&config.dbFilePath);
             if db_path.exists() {
                 match std::fs::remove_dir_all(&db_path).into_report() {

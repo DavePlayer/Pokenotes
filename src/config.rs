@@ -1,4 +1,4 @@
-use crate::errors::ConfigError;
+use crate::errors::{ConfigError, AnyError, DatabaseError};
 use colored::Colorize;
 use directories::ProjectDirs;
 use error_stack::{IntoReport, Report, Result, ResultExt};
@@ -90,5 +90,54 @@ impl Config {
             .change_context(ConfigError::InvalidYamlStructure)?;
 
         Ok(Config { ..conf })
+    }
+
+    pub fn get_config() -> Result<Config, AnyError> {
+
+        let path = match ProjectDirs::from("io", "OmegaLoveIssac", "pokenotes") {
+            Some(val) => Ok(val),
+            None => Err(Report::new(AnyError::DatabaseError(DatabaseError::Other))
+                .attach_printable("error when getting project directories")),
+        }?;
+        let config_file_path: PathBuf = path.config_dir().to_path_buf();
+        if config_file_path.exists() == false {
+            print!("{}{}", config_file_path.to_str().unwrap_or("arr - parse to str??? ").bright_red(), " config directory does not exist. Do you want to create it? (yes/_): ".bright_red());
+            std::io::stdout().flush().unwrap();
+            let mut input: String = format!("");
+            match std::io::stdin().read_line(&mut input) {
+                Ok(_) => {
+                    input = input.trim().to_string();
+                    if input == String::from("yes") {
+                        match std::fs::create_dir(&config_file_path)
+                        .into_report()
+                        .change_context(AnyError::ConfigError(ConfigError::WritingError))
+                        .attach_printable("couldn't create config dir") {
+                            Ok(_) => {},
+                            Err(err) => {return Err(err)}
+                        }
+                    } else {
+                        println!("if not than go away Baka!");
+                        std::process::exit(1);
+                    }
+                }
+                Err(_) => {}
+            }
+        }
+        let config_file_path = match config_file_path.to_str() {
+            Some(val) => val,
+            None => {
+                let err = Report::new(AnyError::ConfigError(ConfigError::Other))
+                    .attach_printable("error when parsing config path to string");
+                return Err(err);
+            }
+        };
+        let config = match Config::new(config_file_path) {
+            Ok(val) => val,
+            Err(err) => {
+                let err = err.change_context(AnyError::ConfigError(ConfigError::Other));
+                return Err(err);
+            }
+        };
+        Ok(config)
     }
 }
