@@ -11,6 +11,7 @@ data:
       name: bulbasaur
       pokedexes: []
       genders: []
+      games_instances: []
       moves: []
       abilities: []
       types: []
@@ -31,6 +32,7 @@ data:
     - id: 2
       name: ivysaur
       genders: []
+      games_instances: []
       moves: []
       abilities: []
       types: []
@@ -51,6 +53,7 @@ data:
     - id: 3
       name: venusaur
       genders: []
+      games_instances: []
       moves: []
       abilities: []
       types: []
@@ -91,6 +94,7 @@ data:
     - id: 5
       name: charmeleon
       genders: []
+      games_instances: []
       moves: []
       abilities: []
       types: []
@@ -111,6 +115,7 @@ data:
     - id: 6
       name: charizard
       genders: []
+      games_instances: []
       moves: []
       abilities: []
       types: []
@@ -131,6 +136,7 @@ data:
     - id: 7
       name: squirtle
       genders: []
+      games_instances: []
       moves: []
       abilities: []
       types: []
@@ -151,6 +157,7 @@ data:
     - id: 8
       name: wartortle
       genders: []
+      games_instances: []
       moves: []
       abilities: []
       types: []
@@ -191,6 +198,7 @@ data:
     - id: 10
       name: caterpie
       genders: []
+      games_instances: []
       moves: []
       abilities: []
       types: []

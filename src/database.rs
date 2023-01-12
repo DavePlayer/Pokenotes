@@ -1,10 +1,13 @@
 use crate::config::*;
 use crate::errors::{self, AnyError, DatabaseError};
-use crate::graphql::schemas::{Game, Pokemon};
+use crate::graphql::schemas::{game::Game, pokemon::Pokemon};
 use colored::Colorize;
 use error_stack::{IntoReport, Result, ResultExt};
 use std::path::Path;
 use surrealdb::{Datastore, Session};
+
+pub(crate) mod bakadata;
+use bakadata::Data as Bakadata;
 
 // #[derive(Default)]
 pub struct Database {
@@ -22,50 +25,6 @@ impl Database {
 
         let mut users: Vec<Pokemon> = Vec::new();
         let mut games: Vec<Game> = Vec::new();
-        games.push(Game {
-            id: 1,
-            name: "Pokémon Diamond".into(),
-        });
-        games.push(Game {
-            id: 1,
-            name: "Pokémon Pearl".into(),
-        });
-        games.push(Game {
-            id: 2,
-            name: "Pokémon Red".into(),
-        });
-        games.push(Game {
-            id: 2,
-            name: "Pokémon Blue".into(),
-        });
-        games.push(Game {
-            id: 3,
-            name: "Pokémon X".into(),
-        });
-        games.push(Game {
-            id: 3,
-            name: "Pokémon Y".into(),
-        });
-        users.push(Pokemon {
-            id: 1,
-            name: "Bulbasaur".into(),
-            games_occurrence: vec![games[0].clone(), games[1].clone()],
-        });
-        users.push(Pokemon {
-            id: 2,
-            games_occurrence: vec![games[1].clone(), games[2].clone()],
-            name: "Squirtle".into(),
-        });
-        users.push(Pokemon {
-            id: 3,
-            name: "Ratata".into(),
-            games_occurrence: vec![games[0].clone(), games[2].clone()],
-        });
-        users.push(Pokemon {
-            id: 4,
-            name: "Biduf".into(),
-            games_occurrence: vec![games[1].clone(), games[0].clone()],
-        });
         return Ok(Database {
             pokemons: users,
             games,

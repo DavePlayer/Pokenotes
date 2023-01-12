@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use std::{io::Write, path::PathBuf};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[allow(non_snake_case)]
 pub struct Config {
     pub dbFilePath: String,
     pub configDirPath: String,
