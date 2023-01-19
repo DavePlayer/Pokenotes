@@ -25,6 +25,8 @@ impl Database {
 
         let mut users: Vec<Pokemon> = Vec::new();
         let mut games: Vec<Game> = Vec::new();
+
+
         return Ok(Database {
             pokemons: users,
             games,
@@ -65,7 +67,10 @@ impl Database {
         .change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))
         .attach_printable(format!["couldn't parse file to string: {}", "./baka_data.yaml"])?;
 
-        // let baka_data = serde_yaml::from_str(&baka_data_string);
+        let baka_data: Bakadata = serde_yaml::from_str(&baka_data_string).unwrap();
+
+        println!("{:#?}", baka_data);
+        // penis
 
         // must refactor graphql schemas
 

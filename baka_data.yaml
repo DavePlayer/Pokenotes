@@ -2,217 +2,218 @@
 games:
   - id: 1
     name: "X"
-    pokemons: null
+    pokemons: [1, 2, 3]
     pokedexes: null
     locations: null
-data:
-  pokemon_v2_pokemon:
-    - id: 1
-      name: bulbasaur
-      pokedexes: []
-      genders: []
-      games_instances: []
-      moves: []
-      abilities: []
-      types: []
-      locations: []
-      stats:
-        - base_stat: 45
-          name: hp
-        - base_stat: 49
-          name: attack
-        - base_stat: 49
-          name: defense
-        - base_stat: 65
-          name: special-attack
-        - base_stat: 65
-          name: special-defense
-        - base_stat: 45
-          name: speed
-    - id: 2
-      name: ivysaur
-      genders: []
-      games_instances: []
-      moves: []
-      abilities: []
-      types: []
-      locations: []
-      stats:
-        - base_stat: 60
-          name: hp
-        - base_stat: 62
-          name: attack
-        - base_stat: 63
-          name: defense
-        - base_stat: 80
-          name: special-attack
-        - base_stat: 80
-          name: special-defense
-        - base_stat: 60
-          name: speed
-    - id: 3
-      name: venusaur
-      genders: []
-      games_instances: []
-      moves: []
-      abilities: []
-      types: []
-      locations: []
-      stats:
-        - base_stat: 80
-          name: hp
-        - base_stat: 82
-          name: attack
-        - base_stat: 83
-          name: defense
-        - base_stat: 100
-          name: special-attack
-        - base_stat: 100
-          name: special-defense
-        - base_stat: 80
-          name: speed
-    - id: 4
-      name: charmander
-      genders: []
-      moves: []
-      abilities: []
-      types: []
-      locations: []
-      stats:
-        - base_stat: 39
-          name: hp
-        - base_stat: 52
-          name: attack
-        - base_stat: 43
-          name: defense
-        - base_stat: 60
-          name: special-attack
-        - base_stat: 50
-          name: special-defense
-        - base_stat: 65
-          name: speed
-    - id: 5
-      name: charmeleon
-      genders: []
-      games_instances: []
-      moves: []
-      abilities: []
-      types: []
-      locations: []
-      stats:
-        - base_stat: 58
-          name: hp
-        - base_stat: 64
-          name: attack
-        - base_stat: 58
-          name: defense
-        - base_stat: 80
-          name: special-attack
-        - base_stat: 65
-          name: special-defense
-        - base_stat: 80
-          name: speed
-    - id: 6
-      name: charizard
-      genders: []
-      games_instances: []
-      moves: []
-      abilities: []
-      types: []
-      locations: []
-      stats:
-        - base_stat: 78
-          name: hp
-        - base_stat: 84
-          name: attack
-        - base_stat: 78
-          name: defense
-        - base_stat: 109
-          name: special-attack
-        - base_stat: 85
-          name: special-defense
-        - base_stat: 100
-          name: speed
-    - id: 7
-      name: squirtle
-      genders: []
-      games_instances: []
-      moves: []
-      abilities: []
-      types: []
-      locations: []
-      stats:
-        - base_stat: 44
-          name: hp
-        - base_stat: 48
-          name: attack
-        - base_stat: 65
-          name: defense
-        - base_stat: 50
-          name: special-attack
-        - base_stat: 64
-          name: special-defense
-        - base_stat: 43
-          name: speed
-    - id: 8
-      name: wartortle
-      genders: []
-      games_instances: []
-      moves: []
-      abilities: []
-      types: []
-      locations: []
-      stats:
-        - base_stat: 59
-          name: hp
-        - base_stat: 63
-          name: attack
-        - base_stat: 80
-          name: defense
-        - base_stat: 65
-          name: special-attack
-        - base_stat: 80
-          name: special-defense
-        - base_stat: 58
-          name: speed
-    - id: 9
-      name: blastoise
-      genders: []
-      moves: []
-      abilities: []
-      types: []
-      locations: []
-      stats:
-        - base_stat: 79
-          name: hp
-        - base_stat: 83
-          name: attack
-        - base_stat: 100
-          name: defense
-        - base_stat: 85
-          name: special-attack
-        - base_stat: 105
-          name: special-defense
-        - base_stat: 78
-          name: speed
-    - id: 10
-      name: caterpie
-      genders: []
-      games_instances: []
-      moves: []
-      abilities: []
-      types: []
-      locations: []
-      stats:
-        - base_stat: 45
-          name: hp
-        - base_stat: 30
-          name: attack
-        - base_stat: 35
-          name: defense
-        - base_stat: 20
-          name: special-attack
-        - base_stat: 20
-          name: special-defense
-        - base_stat: 45
-          name: speed
+pokemons:
+  - id: 1
+    name: bulbasaur
+    pokedexes: []
+    genders: []
+    games_occurrence: []
+    moves: []
+    abilities: []
+    types: []
+    locations: []
+    stats:
+      - base_stat: 45
+        name: hp
+      - base_stat: 49
+        name: attack
+      - base_stat: 49
+        name: defense
+      - base_stat: 65
+        name: special-attack
+      - base_stat: 65
+        name: special-defense
+      - base_stat: 45
+        name: speed
+  - id: 2
+    name: ivysaur
+    genders: []
+    games_occurrence: []
+    moves: []
+    abilities: []
+    types: []
+    locations: []
+    stats:
+      - base_stat: 60
+        name: hp
+      - base_stat: 62
+        name: attack
+      - base_stat: 63
+        name: defense
+      - base_stat: 80
+        name: special-attack
+      - base_stat: 80
+        name: special-defense
+      - base_stat: 60
+        name: speed
+  - id: 3
+    name: venusaur
+    genders: []
+    games_occurrence: []
+    moves: []
+    abilities: []
+    types: []
+    locations: []
+    stats:
+      - base_stat: 80
+        name: hp
+      - base_stat: 82
+        name: attack
+      - base_stat: 83
+        name: defense
+      - base_stat: 100
+        name: special-attack
+      - base_stat: 100
+        name: special-defense
+      - base_stat: 80
+        name: speed
+  - id: 4
+    name: charmander
+    genders: []
+    moves: []
+    abilities: []
+    games_occurrence: []
+    types: []
+    locations: []
+    stats:
+      - base_stat: 39
+        name: hp
+      - base_stat: 52
+        name: attack
+      - base_stat: 43
+        name: defense
+      - base_stat: 60
+        name: special-attack
+      - base_stat: 50
+        name: special-defense
+      - base_stat: 65
+        name: speed
+  - id: 5
+    name: charmeleon
+    genders: []
+    games_occurrence: []
+    moves: []
+    abilities: []
+    types: []
+    locations: []
+    stats:
+      - base_stat: 58
+        name: hp
+      - base_stat: 64
+        name: attack
+      - base_stat: 58
+        name: defense
+      - base_stat: 80
+        name: special-attack
+      - base_stat: 65
+        name: special-defense
+      - base_stat: 80
+        name: speed
+  - id: 6
+    name: charizard
+    genders: []
+    games_occurrence: []
+    moves: []
+    abilities: []
+    types: []
+    locations: []
+    stats:
+      - base_stat: 78
+        name: hp
+      - base_stat: 84
+        name: attack
+      - base_stat: 78
+        name: defense
+      - base_stat: 109
+        name: special-attack
+      - base_stat: 85
+        name: special-defense
+      - base_stat: 100
+        name: speed
+  - id: 7
+    name: squirtle
+    genders: []
+    games_occurrence: []
+    moves: []
+    abilities: []
+    types: []
+    locations: []
+    stats:
+      - base_stat: 44
+        name: hp
+      - base_stat: 48
+        name: attack
+      - base_stat: 65
+        name: defense
+      - base_stat: 50
+        name: special-attack
+      - base_stat: 64
+        name: special-defense
+      - base_stat: 43
+        name: speed
+  - id: 8
+    name: wartortle
+    genders: []
+    games_occurrence: []
+    moves: []
+    abilities: []
+    types: []
+    locations: []
+    stats:
+      - base_stat: 59
+        name: hp
+      - base_stat: 63
+        name: attack
+      - base_stat: 80
+        name: defense
+      - base_stat: 65
+        name: special-attack
+      - base_stat: 80
+        name: special-defense
+      - base_stat: 58
+        name: speed
+  - id: 9
+    name: blastoise
+    genders: []
+    moves: []
+    abilities: []
+    games_occurrence: []
+    types: []
+    locations: []
+    stats:
+      - base_stat: 79
+        name: hp
+      - base_stat: 83
+        name: attack
+      - base_stat: 100
+        name: defense
+      - base_stat: 85
+        name: special-attack
+      - base_stat: 105
+        name: special-defense
+      - base_stat: 78
+        name: speed
+  - id: 10
+    name: caterpie
+    genders: []
+    games_occurrence: []
+    moves: []
+    abilities: []
+    types: []
+    locations: []
+    stats:
+      - base_stat: 45
+        name: hp
+      - base_stat: 30
+        name: attack
+      - base_stat: 35
+        name: defense
+      - base_stat: 20
+        name: special-attack
+      - base_stat: 20
+        name: special-defense
+      - base_stat: 45
+        name: speed

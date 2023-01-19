@@ -1,12 +1,11 @@
-use crate::graphql::schemas::{game::Game, pokemon::Pokemon};
-
-
+use serde::{Serialize, Deserialize};
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Data {
-   games: Vec<Game> ,
-   pokemons: Vec<Pokemon>
+   games: Vec<GameYaml> ,
+   pokemons: Vec<PokemonYaml>
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 /// simple user object
 pub struct PokemonYaml {
     pub id: u32,
@@ -21,12 +20,12 @@ pub struct PokemonYaml {
     stats: [StatYaml; 6]
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct StatYaml {
     base_stat: u32,
     name: String
 }
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct GameYaml {
     pub id: u32,
     pub name: String,
@@ -36,16 +35,10 @@ pub struct GameYaml {
 }
 
 impl Data {
-    fn new(games: Vec<GameYaml>, pokemons: Vec<PokemonYaml>) {
-        let mut pokemons_to_parse: Vec<Pokemon> = vec![];
-        let mut games_to_parse: Vec<Game> = vec![];
-        for game_yaml in games {
-            for pokemon_id in game_yaml.pokemons {
-                let pokemon = pokemons.iter().find(|pok| pok.id == pokemon_id);
-                if let Some(pokemon) = pokemon {
-                    // penis
-                }
-            }
+    fn new(games: Vec<GameYaml>, pokemons: Vec<PokemonYaml>) -> Data {
+        Data {
+            games,
+            pokemons
         }
     }
 }
