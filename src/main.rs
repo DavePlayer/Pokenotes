@@ -16,6 +16,10 @@ mod config;
 mod database;
 mod errors;
 mod graphql;
+mod utils;
+mod prelude;
+
+
 
 #[derive(Serialize)]
 struct ExData {

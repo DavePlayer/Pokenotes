@@ -1,12 +1,17 @@
 ---
 games:
-  - id: 1
+  - id: "06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"
     name: "X"
-    pokemons: [1, 2, 3]
+    pokemons: ["c25358ee-66fd-47c5-a14f-6f92ded5aa28", "28c5889c-3f9a-446a-8b7f-d6eb25b6025a", "99751820-7bcb-4f60-b86b-2703661b2aec"]
+    pokedexes: null
+    locations: null
+  - id: "3bc4d563-efe1-4cc1-8e99-d0c21fee2907"
+    name: "Y"
+    pokemons: ["2dcac683-7c7b-429c-80ab-29ad4623c103", "c4fff694-b291-42d9-ac42-21bcd7ac1dc1", "f1993937-90b1-4790-bdad-39db6c6b7d30"]
     pokedexes: null
     locations: null
 pokemons:
-  - id: 1
+  - id: "c25358ee-66fd-47c5-a14f-6f92ded5aa28"
     name: bulbasaur
     pokedexes: []
     genders: []
@@ -28,7 +33,7 @@ pokemons:
         name: special-defense
       - base_stat: 45
         name: speed
-  - id: 2
+  - id: "28c5889c-3f9a-446a-8b7f-d6eb25b6025a"
     name: ivysaur
     genders: []
     games_occurrence: []
@@ -49,7 +54,7 @@ pokemons:
         name: special-defense
       - base_stat: 60
         name: speed
-  - id: 3
+  - id: "99751820-7bcb-4f60-b86b-2703661b2aec"
     name: venusaur
     genders: []
     games_occurrence: []
@@ -70,7 +75,7 @@ pokemons:
         name: special-defense
       - base_stat: 80
         name: speed
-  - id: 4
+  - id: "e6434689-a8f4-4415-aa54-1b8c9a6d5eb9"
     name: charmander
     genders: []
     moves: []
@@ -91,7 +96,7 @@ pokemons:
         name: special-defense
       - base_stat: 65
         name: speed
-  - id: 5
+  - id: "2dcac683-7c7b-429c-80ab-29ad4623c103"
     name: charmeleon
     genders: []
     games_occurrence: []
@@ -112,7 +117,7 @@ pokemons:
         name: special-defense
       - base_stat: 80
         name: speed
-  - id: 6
+  - id: "c4fff694-b291-42d9-ac42-21bcd7ac1dc1"
     name: charizard
     genders: []
     games_occurrence: []
@@ -133,7 +138,7 @@ pokemons:
         name: special-defense
       - base_stat: 100
         name: speed
-  - id: 7
+  - id: "7c771cdd-1240-4ecb-aaa0-c5c676a7a7f7"
     name: squirtle
     genders: []
     games_occurrence: []
@@ -154,7 +159,7 @@ pokemons:
         name: special-defense
       - base_stat: 43
         name: speed
-  - id: 8
+  - id: "a117f5cd-a4e5-4218-b07c-de01f6c5b4ca"
     name: wartortle
     genders: []
     games_occurrence: []
@@ -175,7 +180,7 @@ pokemons:
         name: special-defense
       - base_stat: 58
         name: speed
-  - id: 9
+  - id: "0d22aca0-899d-42f9-8321-6c6045df481b"
     name: blastoise
     genders: []
     moves: []
@@ -196,7 +201,7 @@ pokemons:
         name: special-defense
       - base_stat: 78
         name: speed
-  - id: 10
+  - id: "f1993937-90b1-4790-bdad-39db6c6b7d30"
     name: caterpie
     genders: []
     games_occurrence: []

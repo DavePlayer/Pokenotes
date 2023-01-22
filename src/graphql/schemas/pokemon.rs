@@ -1,4 +1,8 @@
+use std::collections::BTreeMap;
+
 use juniper::graphql_object;
+use surrealdb::sql::Value;
+use serde::{Serialize, Deserialize};
 
 use crate::database::Database;
 
@@ -7,7 +11,7 @@ use super::game::Game;
 pub mod stat;
 
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 /// simple user object
 pub struct Pokemon {
     pub id: i32,
@@ -43,5 +47,15 @@ impl Pokemon {
     /// games in which pokemon occours
     fn games_occurrence(&self) -> &Vec<Game> {
         &self.games_occurrence
+    }
+}
+
+impl From<Pokemon> for Value {
+    fn from(val: Pokemon) -> Self {
+
+        let mut value: BTreeMap<String, Value> = BTreeMap::new();
+        value.insert("id".into(), val.id.into());
+        value.insert("name".into(), val.name.into());
+        Value::from(value)
     }
 }

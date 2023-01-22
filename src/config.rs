@@ -33,7 +33,7 @@ impl Config {
         let file_string = match file_string {
             Ok(val) => val,
             Err(err) => {
-                println!("{:?}", err);
+                // println!("{:?}", err);
                 if err_type.unwrap() == std::io::ErrorKind::NotFound {
                     print!("\nMost likely the config.yaml does not exist. Do you want me to create it at {}? (yes/_): ", db_path);
                     std::io::stdout().flush().unwrap();

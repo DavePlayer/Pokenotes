@@ -1,11 +1,15 @@
+use std::collections::BTreeMap;
+use serde::{Serialize, Deserialize};
+use surrealdb::sql::{Array, Object, Value};
+
 use juniper::graphql_object;
 
-use crate::database::Database;
+use crate::{database::Database, errors::AnyError};
 
 use super::pokemon::{self, Pokemon};
 
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Game {
     pub id: i32,
     pub name: String,
@@ -43,3 +47,40 @@ impl Game {
         self.id
     }
 }
+
+// impl From<Game> for Value {
+//     fn from(val: Game) -> Self {
+
+//         let mut value: BTreeMap<String, Value> = BTreeMap::new();
+//         value.insert("id".into(), val.id.into());
+//         value.insert("name".into(), val.name.into());
+//         // value.insert("pokemons".into(), val.pokemons.into());
+//         Value::from(value)
+//     }
+// }
+
+impl TryFrom<Game> for Value {
+    fn try_from(val: Game) -> Result<surrealdb::sql::Value, AnyError> {
+
+        let mut value: BTreeMap<String, Value> = BTreeMap::new();
+        value.insert("id".into(), val.id.into());
+        value.insert("name".into(), val.name.into());
+        // value.insert("pokemons".into(), val.pokemons.into());
+        Ok(Value::from(value))
+    }
+
+    type Error = AnyError;
+}
+
+// impl Into<Game> for Value {
+//     fn into(self) -> Game {
+//         match self {
+//             Value::Object(obj) => {
+//                let json = serde_json::to_value(obj).unwrap();
+//                let data = serde_json::from_value(json).unwrap();
+//                todo!();
+//             },
+//             _ => {}
+//         }
+//     }
+// }

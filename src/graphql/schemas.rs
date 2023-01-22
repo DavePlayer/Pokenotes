@@ -14,8 +14,8 @@ impl Query {
         context.get_all_pokemon().await
     }
     /// games array
-    pub fn games(context: &Database) -> &Vec<game::Game> {
-        &context.games
+    pub async fn games(context: &Database) -> Option<&Vec<game::Game>> {
+        context.get_all_games().await
     }
 }
 
