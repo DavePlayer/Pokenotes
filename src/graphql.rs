@@ -14,11 +14,7 @@ pub async fn graphql_route(
     schema: web::Data<Schema>,
 ) -> Result<HttpResponse, actix_web::error::Error> {
     let db = Database::new().await.unwrap(); // must be unwrap due to actix error incompability with erroe stack ()
-    // let db = match Database::new().await {
-    //     Ok(db) => db,
-    //     Err(err) => Err(InternalError(err))
-    // }
-    // let db = db.init_database().await.unwrap();
+    
     return graphql_handler(&schema, &db, req, payload).await;
 }
 

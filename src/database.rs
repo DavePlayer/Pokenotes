@@ -6,7 +6,9 @@ use crate::prelude::W;
 use colored::Colorize;
 use error_stack::{IntoReport, Result, ResultExt};
 use surrealdb::sql::Value;
+use std::borrow::Borrow;
 use std::collections::BTreeMap;
+use std::os::fd::AsFd;
 use std::path::Path;
 use std::result;
 use surrealdb::{Datastore, Session};
@@ -143,7 +145,7 @@ impl Database {
             }
         }
 
-        let sql = "SELECT name, pokemons.name from games FETCH pokemons";
+        let sql = "SELECT id, name from games FETCH pokemons";
         let results = connection
             .execute(sql, &session, None, false)
             .await
@@ -153,21 +155,32 @@ impl Database {
                 "couldn't CREATE pokemon in table".into(),
                 sql.to_string(),
             )))?;
-        Database::print_surreal_response(results)?;
+        Database::print_surreal_response(&results)?;
+        let result = results
+        .into_iter()
+        .next().
+        map(|r| r.result)
+        .transpose()
+        .into_report()
+        .change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))?;
+        if let Some(res) = result {
+           let json = serde_json::to_string(&res).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))?;
+           let game: Game = serde_json::from_str(&json).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData)).attach_printable("kill me not working aaaaaa")?;;
+           println!("KURWA TAK NARESZCIE: {:#?}", game);
+        }
         Ok(())
     }
 
-    pub fn print_surreal_response(response: Vec<surrealdb::Response>) -> Result<(), AnyError> {
-        let res = response
-        .into_iter()
-        .next()
-        .map(|r| r.result)
-        .transpose()
-        .into_report()
-        .change_context(AnyError::DatabaseError(DatabaseError::Other))
-        .attach_printable("couldn't transform response in print_surreal_response()")?;
-        for record in res.into_iter() {
-            println!("record: {}\n", record);
+    pub fn print_surreal_response<B>(response: B) -> Result<(), AnyError> 
+        where
+        B: AsRef<[surrealdb::Response]>,
+    {
+        let res = response.as_ref();
+        for r in res {
+            match &r.result {
+                Ok(result) => println!("record: {}\n", result),
+                Err(e) => println!("Error: {:?}", e),
+            }
         }
         Ok(())
     }
