@@ -1,11 +1,12 @@
-use std::collections::BTreeMap;
+use std::{any::Any, collections::BTreeMap};
+
 use serde::{Serialize, Deserialize};
-use surrealdb::sql::{Array, Object, Value};
 
-use juniper::{graphql_object, GraphQLValue};
-use uuid::Uuid;
+use juniper::{graphql_object};
+use error_stack::{IntoReport, Result, ResultExt};
+use surrealdb::sql::Value;
 
-use crate::{database::Database, errors::AnyError};
+use crate::{database::Database, errors::{AnyError, self, DatabaseError}};
 
 use super::pokemon::{self, Pokemon};
 
@@ -14,22 +15,53 @@ use super::pokemon::{self, Pokemon};
 pub struct Game {
     pub id: String,
     pub name: String,
+    pub pokemons: Vec<String>
 }
 
 #[graphql_object(context = Database)]
 impl Game {
     /// pokemons which occour in specific game
-    async fn pokemons(&self, context: &Database) -> Vec<&pokemon::Pokemon> {
-        let data = context.get_all_pokemon().await;
-        if let Some(data) = data {
-            let poks = data
-                .iter()
-                .filter(|user| user.games_occurrence.iter().any(|game| game.id == self.id))
-                .collect();
-            return poks;
-        } else {
-            return vec![];
-        }
+    async fn pokemons(&self, context: &Database) -> Vec<pokemon::Pokemon> {
+        let sql = "SELECT id, name from pokemons where $array contains id";
+        let pokemons: Vec<&str> = self.pokemons.iter().map(|s| s.as_ref()).collect();
+        let vars: BTreeMap<String, Value> = [
+            ("array".into(), pokemons.into()),
+        ].into();
+        let Ok(results) = context.connection
+            .execute(sql, &context.session, Some(vars), false)
+            .await
+            .into_report()
+            .attach_printable(format!("error with database"))
+            .change_context(AnyError::DatabaseError(errors::DatabaseError::ExecuteSQL(
+                "couldn't CREATE pokemon in table".into(),
+                sql.to_string(),
+            ))) else {println!("error when executing sql");return vec![];};
+        Database::print_surreal_response(&results);
+        let result = results
+        .into_iter()
+        .next().
+        map(|r| r.result)
+        .transpose()
+        .into_report()
+        .change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData));
+        let res =  match result {
+           Ok(res) => match res {
+            Some(res) => res,
+            None => {return vec![]}  
+           },
+           Err(err) => {println!("error: {:?}", err); return vec![]}
+        };
+        let Ok(json) = serde_json::to_string(&res).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData)) else {return vec![]};
+        println!("json: {:#?}", json);
+        let games: Result<Vec<pokemon::Pokemon>, AnyError> = serde_json::from_str(&json).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData)).attach_printable("kill me not working aaaaaa");
+        let games = match games {
+            Ok(val) => val,
+            Err(err) => {
+                println!("{:#?}",err);
+                return vec![];
+            }
+        };
+        return games;
     }
     fn new() -> Game {
         todo!();
@@ -39,7 +71,10 @@ impl Game {
         self.name.as_str()
     }
     /// game id
-    fn id(&self) -> &str {
-        self.id.as_str()
+    fn id(&self) -> String {
+        let id = self.id.split(":").nth(1).unwrap();
+        let id = id.replace("⟨", "");
+        let id = id.replace("⟩", "");
+        id
     }
 }

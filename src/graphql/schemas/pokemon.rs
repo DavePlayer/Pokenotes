@@ -14,39 +14,32 @@ pub mod stat;
 #[derive(Clone, Debug, Serialize, Deserialize)]
 /// simple user object
 pub struct Pokemon {
-    pub id: i32,
+    pub id: String,
     pub name: String,
-    pub games_occurrence: Vec<Game>,
+    // pub games_occurrence: Vec<Game>,
     // pokedexes: []
     // genders: []
     // moves: []
     // abilities: []
     // types: []
     // locations: []
-    stats: [stat::Stat; 6]
+    // stats: [stat::Stat; 7]
 }
 
 #[graphql_object(context = Database)]
 impl Pokemon {
-    /// pokemon identyfier (not sure why i can't add uuid)
-    async fn pokemon(context: &Database, id: Option<i32>) -> Option<&Pokemon> {
-        if let Some(id) = id {
-            context.get_pokemon(&id).await
-        } else {
-            None
-        }
-    }
     /// pokemon name (don't know what you expected)
     fn name(&self) -> &str {
         self.name.as_str()
     }
     /// pokemon id
-    fn id(&self) -> i32 {
-        self.id
+    fn id(&self) -> String {
+        self.id.to_string()
     }
     /// games in which pokemon occours
-    fn games_occurrence(&self) -> &Vec<Game> {
-        &self.games_occurrence
+    fn games_occurrence(&self) -> Vec<Game> {
+        // &self.games_occurrence
+        vec![]
     }
 }
 

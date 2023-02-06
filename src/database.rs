@@ -1,16 +1,11 @@
 use crate::config::*;
 use crate::errors::{self, AnyError, DatabaseError};
-use crate::graphql::schemas::pokemon;
 use crate::graphql::schemas::{game::Game, pokemon::Pokemon};
-use crate::prelude::W;
 use colored::Colorize;
 use error_stack::{IntoReport, Result, ResultExt};
 use surrealdb::sql::Value;
-use std::borrow::Borrow;
 use std::collections::BTreeMap;
-use std::os::fd::AsFd;
 use std::path::Path;
-use std::result;
 use surrealdb::{Datastore, Session};
 
 // use surrealdb::Surreal;
@@ -66,17 +61,6 @@ impl Database {
 
         let session = Session::for_db("sth", "pokemons");
 
-        // let sql = "CREATE pokemon SET name='Bulbasaur'";
-        // let results = connection
-        //     .execute(sql, &session, None, false)
-        //     .await
-        //     .into_report()
-        //     .attach_printable(format!("error with database"))
-        //     .change_context(AnyError::DatabaseError(errors::DatabaseError::ExecuteSQL(
-        //         "couldn't CREATE pokemon in table".into(),
-        //         sql.to_string(),
-        //     )))?;
-        // println!("{results:?}");
         let baka_data_string = std::fs::read_to_string("./baka_data.yaml")
         .into_report()
         .change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))
@@ -144,30 +128,6 @@ impl Database {
                 Database::print_surreal_response(response)?;
             }
         }
-
-        let sql = "SELECT id, name from games FETCH pokemons";
-        let results = connection
-            .execute(sql, &session, None, false)
-            .await
-            .into_report()
-            .attach_printable(format!("error with database"))
-            .change_context(AnyError::DatabaseError(errors::DatabaseError::ExecuteSQL(
-                "couldn't CREATE pokemon in table".into(),
-                sql.to_string(),
-            )))?;
-        Database::print_surreal_response(&results)?;
-        let result = results
-        .into_iter()
-        .next().
-        map(|r| r.result)
-        .transpose()
-        .into_report()
-        .change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))?;
-        if let Some(res) = result {
-           let json = serde_json::to_string(&res).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))?;
-           let game: Game = serde_json::from_str(&json).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData)).attach_printable("kill me not working aaaaaa")?;;
-           println!("KURWA TAK NARESZCIE: {:#?}", game);
-        }
         Ok(())
     }
 
@@ -220,9 +180,8 @@ impl Database {
     pub async fn get_game(&self, id: &i32) -> Option<&Vec<Game>> {
         None
     }
-    pub async fn get_all_games(&self) -> Option<&Vec<Game>> {
-        let sql = "SELECT * FROM games";
-        let games: Vec<Game> = vec![];
+    pub async fn get_all_games(&self) -> Result<Vec<Game>, AnyError> {
+        let sql = "SELECT id, name, pokemons from games";
         let results = self.connection
             .execute(sql, &self.session, None, false)
             .await
@@ -231,16 +190,30 @@ impl Database {
             .change_context(AnyError::DatabaseError(errors::DatabaseError::ExecuteSQL(
                 "couldn't CREATE pokemon in table".into(),
                 sql.to_string(),
-            )));
+            )))?;
+        Database::print_surreal_response(&results)?;
+        let result = results
+        .into_iter()
+        .next().
+        map(|r| r.result)
+        .transpose()
+        .into_report()
+        .change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))?;
+        if let Some(res) = result {
+           let json = serde_json::to_string(&res).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))?;
+           let games: Vec<Game> = serde_json::from_str(&json).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData)).attach_printable("kill me not working aaaaaa")?;
+           return Ok(games);
+        }
         // let games: Vec<Game> = results.take(0);
-        None
+        Ok(vec![])
     }
     pub async fn get_pokemon(&self, id: &i32) -> Option<&Pokemon> {
         // let conn = self.establish_sql_connection().await;
         None
     }
-    pub async fn get_all_pokemon(&self) -> Option<&Vec<Pokemon>> {
-        None
+    pub async fn get_all_pokemon(&self) -> Result<Vec<Pokemon>, AnyError> {
+        let pokemons: Vec<Pokemon> = Vec::new();
+        Ok(pokemons)
     }
 }
 

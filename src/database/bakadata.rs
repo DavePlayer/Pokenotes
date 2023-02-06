@@ -9,7 +9,7 @@ pub struct Data {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 /// simple user object
 pub struct PokemonYaml {
-    pub id: Uuid,
+    pub id: String,
     pub name: String,
     pub games_occurrence: Vec<u32>,
     // pokedexes: []
@@ -30,9 +30,9 @@ pub struct StatYaml {
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct GameYaml {
-    pub id: Uuid,
+    pub id: String,
+    pub pokemons: Vec<Uuid>,
     pub name: String,
-    pub pokemons: Vec<Uuid>
     // pub pokedexes: null
     // pub locations: null
 }

@@ -10,12 +10,18 @@ pub struct Query;
 #[graphql_object(context = Database)]
 impl Query {
     /// pokemon array
-    pub async fn pokemons(context: &Database) -> Option<&Vec<pokemon::Pokemon>> {
-        context.get_all_pokemon().await
+    pub async fn pokemons(context: &Database) -> Vec<pokemon::Pokemon> {
+        match context.get_all_pokemon().await {
+            Ok(val) => val,
+            Err(err) => vec![],
+        }
     }
     /// games array
-    pub async fn games(context: &Database) -> Option<&Vec<game::Game>> {
-        context.get_all_games().await
+    pub async fn games(context: &Database) -> Vec<game::Game> {
+        match context.get_all_games().await {
+            Ok(val) => val,
+            Err(err) => {println!("{:?}",err);return vec![]},
+        }
     }
 }
 
