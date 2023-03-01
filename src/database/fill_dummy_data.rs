@@ -14,6 +14,7 @@ impl Database {
     pub async fn fill_dummy_data() -> Result<(), AnyError> {
         let config = Config::get_config()?;
         let path = config.dbFilePath;
+        
         println!("{}{}", "connecting to database: ".cyan(), path.cyan());
         let connection = Datastore::new(&format!("file://{path}"))
             .await
@@ -27,6 +28,8 @@ impl Database {
 
         let session = Session::for_db("sth", "pokemons");
 
+        
+        // reading dummy data from bakadata.yaml
         let baka_data_string = std::fs::read_to_string("./baka_data.yaml")
         .into_report()
         .change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))
@@ -36,6 +39,7 @@ impl Database {
         let games = &baka_data.games;
         let pokemons = &baka_data.pokemons;
 
+        // adding dummy data pokemons to database
         for pokemon in pokemons {
             let sql = r#"CREATE type::thing("pokemons", $id) CONTENT $data"#;
             let stats = serde_json::to_string(&pokemon.stats).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))?;
@@ -43,6 +47,7 @@ impl Database {
             let data: BTreeMap<String, Value> = [
                 ("name".into(), (*pokemon.name).into()),
                 ("stats".into(), (stats).into()),
+                ("games_occurrence".into(), (pokemon.games_occurrence.iter().map(|s| &**s).collect::<Vec<&str>>()).into()),
             ].into();
 
             let vars: BTreeMap<String, Value> = [
@@ -56,9 +61,9 @@ impl Database {
             .change_context(AnyError::DatabaseError(DatabaseError::ExecuteSQL("error when executing sql: ".into(), sql.into())))
             .attach_printable(format!["error when executing sql: {}", sql])?;
 
-            // Database::print_surreal_response(response)?;
         }
 
+        // adding every dummy data game to database
         for game in games {
             let sql = r#"CREATE type::thing("games", $id) CONTENT $data"#;
             let data: BTreeMap<String, Value> = [
@@ -76,8 +81,8 @@ impl Database {
             .change_context(AnyError::DatabaseError(DatabaseError::ExecuteSQL("error when executing sql: ".into(), sql.into())))
             .attach_printable(format!["error when executing sql: {}", sql])?;
 
-            // Database::print_surreal_response(response)?;
 
+            // linking pokemons to game.pokemons in database
             for id in game.pokemons.iter() {
                 let sql = r#"UPDATE type::thing("games", $id) SET pokemons += [type::thing("pokemons", $pokemonId)]"#;
                 let vars: BTreeMap<String, Value> = [
@@ -90,8 +95,6 @@ impl Database {
                 .into_report()
                 .change_context(AnyError::DatabaseError(DatabaseError::ExecuteSQL("error when executing sql: ".into(), sql.into())))
                 .attach_printable(format!["error when executing sql: {}", sql])?;
-
-                // Database::print_surreal_response(response)?;
             }
         }
         Ok(())

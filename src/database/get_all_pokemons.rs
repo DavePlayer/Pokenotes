@@ -7,7 +7,7 @@ use super::Database;
 impl Database {
     pub async fn get_all_pokemon(&self) -> Result<Vec<Pokemon>, AnyError> {
         
-        let sql = "SELECT id, name FROM pokemons";
+        let sql = "SELECT id, name, games_occurrence FROM pokemons";
         let results = self.connection
             .execute(sql, &self.session, None, false)
             .await
@@ -26,6 +26,7 @@ impl Database {
         .transpose()
         .into_report()
         .change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData))?.ok_or(AnyError::DatabaseError(DatabaseError::ParseData))?;
+
 
         let json = serde_json::to_string(&results).into_report().change_context(AnyError::DatabaseError(DatabaseError::ParseData))?;
         let pokemons: Vec<Pokemon> = serde_json::from_str(&json).into_report().change_context(AnyError::DatabaseError(DatabaseError::ParseData))?;

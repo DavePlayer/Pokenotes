@@ -11,7 +11,7 @@ pub struct Data {
 pub struct PokemonYaml {
     pub id: String,
     pub name: String,
-    pub games_occurrence: Vec<u32>,
+    pub games_occurrence: Vec<String>,
     // pokedexes: []
     // genders: []
     // moves: []

@@ -15,7 +15,7 @@ pokemons:
     name: bulbasaur
     pokedexes: []
     genders: []
-    games_occurrence: []
+    games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
     abilities: []
     types: []
@@ -36,7 +36,7 @@ pokemons:
   - id: "28c5889c-3f9a-446a-8b7f-d6eb25b6025a"
     name: ivysaur
     genders: []
-    games_occurrence: []
+    games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
     abilities: []
     types: []
@@ -57,7 +57,7 @@ pokemons:
   - id: "99751820-7bcb-4f60-b86b-2703661b2aec"
     name: venusaur
     genders: []
-    games_occurrence: []
+    games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
     abilities: []
     types: []
@@ -80,7 +80,7 @@ pokemons:
     genders: []
     moves: []
     abilities: []
-    games_occurrence: []
+    games_occurrence: ["3bc4d563-efe1-4cc1-8e99-d0c21fee2907"]
     types: []
     locations: []
     stats:
@@ -99,7 +99,7 @@ pokemons:
   - id: "2dcac683-7c7b-429c-80ab-29ad4623c103"
     name: charmeleon
     genders: []
-    games_occurrence: []
+    games_occurrence: ["3bc4d563-efe1-4cc1-8e99-d0c21fee2907"]
     moves: []
     abilities: []
     types: []
@@ -120,7 +120,7 @@ pokemons:
   - id: "c4fff694-b291-42d9-ac42-21bcd7ac1dc1"
     name: charizard
     genders: []
-    games_occurrence: []
+    games_occurrence: ["3bc4d563-efe1-4cc1-8e99-d0c21fee2907"]
     moves: []
     abilities: []
     types: []
@@ -141,7 +141,7 @@ pokemons:
   - id: "7c771cdd-1240-4ecb-aaa0-c5c676a7a7f7"
     name: squirtle
     genders: []
-    games_occurrence: []
+    games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
     abilities: []
     types: []
@@ -162,7 +162,7 @@ pokemons:
   - id: "a117f5cd-a4e5-4218-b07c-de01f6c5b4ca"
     name: wartortle
     genders: []
-    games_occurrence: []
+    games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
     abilities: []
     types: []
@@ -185,7 +185,7 @@ pokemons:
     genders: []
     moves: []
     abilities: []
-    games_occurrence: []
+    games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     types: []
     locations: []
     stats:
@@ -204,7 +204,7 @@ pokemons:
   - id: "f1993937-90b1-4790-bdad-39db6c6b7d30"
     name: caterpie
     genders: []
-    games_occurrence: []
+    games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
     abilities: []
     types: []
