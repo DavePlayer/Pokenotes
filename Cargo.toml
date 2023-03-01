@@ -14,12 +14,17 @@ serde_json = "1.0.91"
 clap = {version = "4.0.29", features = [ "derive" ]}
 directories = "4.0.1"
 
+# custom procedural macros
+# remove_surreal_prefix_derive = { path = "./remove_surreal_prefix_derive" }
+
 # url validation
 url = { version = "2", features = ["serde"] } 
 
 # GrapgQl
-juniper={version = "0.15.10", features=["uuid"]}
-juniper_actix="0.4.0"
+# juniper={version = "0.15.10", features=["uuid"]}
+# juniper_actix="0.4.0"
+juniper = { git = "https://github.com/graphql-rust/juniper", branch = "master" }
+juniper_actix = { git = "https://github.com/graphql-rust/juniper", branch = "master" }
 surrealdb = "1.0.0-beta.8"
 # surrealdb = "1.0.0-beta.9" will help a lot
 derive = { version = "0.5.0", package = "surrealdb-derive" }

@@ -1,7 +1,4 @@
 use std::{error::Error, fmt};
-use error_stack::{
-    report, Report,
-};
 
 #[derive(Debug)]
 pub enum AnyError {
@@ -14,6 +11,7 @@ pub enum DatabaseError {
     EstablishConnectionError(String),
     ExecuteSQL(String, String),
     ReadDummyData,
+    ParseData,
     Other,
 }
 

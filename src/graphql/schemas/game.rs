@@ -1,4 +1,4 @@
-use std::{any::Any, collections::BTreeMap};
+use std::collections::BTreeMap;
 
 use serde::{Serialize, Deserialize};
 
@@ -6,14 +6,16 @@ use juniper::{graphql_object};
 use error_stack::{IntoReport, Result, ResultExt};
 use surrealdb::sql::Value;
 
-use crate::{database::Database, errors::{AnyError, self, DatabaseError}};
+use crate::{database::Database, errors::{AnyError, self, DatabaseError}, utils::remove_surrealdb_id_prefix};
 
-use super::pokemon::{self, Pokemon};
+use super::pokemon;
 
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Game {
-    pub id: String,
+    // making
+    #[serde(deserialize_with = "remove_surrealdb_id_prefix")]
+    pub id: uuid::Uuid,
     pub name: String,
     pub pokemons: Vec<String>
 }
@@ -36,7 +38,7 @@ impl Game {
                 "couldn't CREATE pokemon in table".into(),
                 sql.to_string(),
             ))) else {println!("error when executing sql");return vec![];};
-        Database::print_surreal_response(&results);
+        Database::print_surreal_response(&results).unwrap();
         let result = results
         .into_iter()
         .next().
@@ -71,10 +73,7 @@ impl Game {
         self.name.as_str()
     }
     /// game id
-    fn id(&self) -> String {
-        let id = self.id.split(":").nth(1).unwrap();
-        let id = id.replace("⟨", "");
-        let id = id.replace("⟩", "");
-        id
+    fn id(&self) -> uuid::Uuid {
+        self.id
     }
 }

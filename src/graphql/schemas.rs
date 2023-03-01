@@ -13,14 +13,14 @@ impl Query {
     pub async fn pokemons(context: &Database) -> Vec<pokemon::Pokemon> {
         match context.get_all_pokemon().await {
             Ok(val) => val,
-            Err(err) => vec![],
+            Err(err) => {eprintln!("{:?}",err);return vec![]},
         }
     }
     /// games array
     pub async fn games(context: &Database) -> Vec<game::Game> {
         match context.get_all_games().await {
             Ok(val) => val,
-            Err(err) => {println!("{:?}",err);return vec![]},
+            Err(err) => {eprintln!("{:?}",err);return vec![]},
         }
     }
 }

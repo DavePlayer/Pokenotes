@@ -36,12 +36,3 @@ pub struct GameYaml {
     // pub pokedexes: null
     // pub locations: null
 }
-
-impl Data {
-    fn new(games: Vec<GameYaml>, pokemons: Vec<PokemonYaml>) -> Data {
-        Data {
-            games,
-            pokemons
-        }
-    }
-}

@@ -1,6 +1,6 @@
 // #![deny(warnings)]
 
-use actix_web::{web, Error, HttpResponse, error::InternalError};
+use actix_web::{web, Error, HttpResponse};
 use juniper_actix::{graphiql_handler, graphql_handler, playground_handler};
 
 pub(crate) mod schemas;
