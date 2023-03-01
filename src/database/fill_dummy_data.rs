@@ -97,6 +97,21 @@ impl Database {
                 .attach_printable(format!["error when executing sql: {}", sql])?;
             }
         }
+        for pokemon in pokemons {
+            for id in &pokemon.games_occurrence {
+                let sql = r#"UPDATE type::thing("pokemons", $id) SET games_occurrence = [type::thing("games", $gameId)]"#;
+                let vars: BTreeMap<String, Value> = [
+                    ("id".into(), pokemon.id.to_string().into()),
+                    ("gameId".into(), id.to_string().into())
+                ].into();
+
+                let _response = connection.execute(sql, &session, Some(vars), false)
+                .await
+                .into_report()
+                .change_context(AnyError::DatabaseError(DatabaseError::ExecuteSQL("error when executing sql: ".into(), sql.into())))
+                .attach_printable(format!["error when executing sql: {}", sql])?;
+            }
+        }
         Ok(())
     }
 }

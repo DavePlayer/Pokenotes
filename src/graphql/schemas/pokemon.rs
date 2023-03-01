@@ -45,7 +45,6 @@ impl Pokemon {
         let vars: BTreeMap<String, Value> = [
             ("array".into(), games.into()),
         ].into();
-        println!("vars: {:?}", vars);
         let Ok(results) = context.connection
             .execute(sql, &context.session, Some(vars), false)
             .await
@@ -56,9 +55,8 @@ impl Pokemon {
                 sql.to_string(),
             ))) else {println!("error when executing sql");return vec![];};
         let games: Vec<&str> = self.games_occurrence.iter().map(|s| s.as_ref()).collect();
-        println!("{:?} {:?}", results, games);
 
-        Database::print_surreal_response(&results).unwrap();
+        // Database::print_surreal_response(&results).unwrap();
 
         let result = results
         .into_iter()
@@ -76,16 +74,15 @@ impl Pokemon {
            Err(err) => {println!("error: {:?}", err); return vec![]}
         };
         let Ok(json) = serde_json::to_string(&res).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData)) else {return vec![]};
-        println!("json: {:#?}", json);
-        // let games: Result<Vec<pokemon::Pokemon>, AnyError> = serde_json::from_str(&json).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData)).attach_printable("kill me not working aaaaaa");
-        // let games = match games {
-        //     Ok(val) => val,
-        //     Err(err) => {
-        //         println!("{:#?}",err);
-        //         return vec![];
-        //     }
-        // };
-        // return games;
-        vec![]
+        // println!("json: {:#?}", json);
+        let games: Result<Vec<Game>, _> = serde_json::from_str(&json).into_report().change_context(AnyError::DatabaseError(DatabaseError::ReadDummyData)).attach_printable("kill me not working aaaaaa");
+        let games = match games {
+            Ok(val) => val,
+            Err(err) => {
+                println!("{:#?}",err);
+                return vec![];
+            }
+        };
+        return games;
     }
 }

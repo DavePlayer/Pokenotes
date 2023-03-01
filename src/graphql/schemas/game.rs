@@ -26,7 +26,6 @@ impl Game {
     async fn pokemons(&self, context: &Database) -> Vec<pokemon::Pokemon> {
         let sql = "SELECT id, name, games_occurrence from pokemons where $array contains id";
         let pokemons: Vec<&str> = self.pokemons.iter().map(|s| s.as_ref()).collect();
-        println!("pokemons from games: {:?}", pokemons);
         let vars: BTreeMap<String, Value> = [
             ("array".into(), pokemons.into()),
         ].into();
@@ -40,7 +39,7 @@ impl Game {
                 sql.to_string(),
             ))) else {println!("error when executing sql");return vec![];};
 
-        Database::print_surreal_response(&results).unwrap();
+        // Database::print_surreal_response(&results).unwrap();
 
         let result = results
         .into_iter()
