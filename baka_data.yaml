@@ -10,6 +10,9 @@ games:
     pokemons: ["2dcac683-7c7b-429c-80ab-29ad4623c103", "c4fff694-b291-42d9-ac42-21bcd7ac1dc1", "f1993937-90b1-4790-bdad-39db6c6b7d30"]
     pokedexes: null
     locations: null
+genders:
+  - id: "c4e82826-c737-4be5-9370-43fbd1e19ea7"
+    name: "male"
 pokemons:
   - id: "c25358ee-66fd-47c5-a14f-6f92ded5aa28"
     name: bulbasaur

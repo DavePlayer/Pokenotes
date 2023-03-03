@@ -54,7 +54,6 @@ impl Pokemon {
                 "couldn't CREATE pokemon in table".into(),
                 sql.to_string(),
             ))) else {println!("error when executing sql");return vec![];};
-        let games: Vec<&str> = self.games_occurrence.iter().map(|s| s.as_ref()).collect();
 
         // Database::print_surreal_response(&results).unwrap();
 

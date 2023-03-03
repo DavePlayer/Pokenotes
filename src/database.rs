@@ -46,7 +46,7 @@ impl Database {
     }
 
 
-
+    #[allow(unused)]
     pub fn print_surreal_response<B>(response: B) -> Result<(), AnyError> 
         where
         B: AsRef<[surrealdb::Response]>,

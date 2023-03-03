@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 actix-cors="0.6.2"
 actix-web = "4.2.1"
+actix-files = "0.6.2"
 serde = { version = "1.0.144", features = ["derive"] }
 serde_yaml = "0.9.16"
 serde_json = "1.0.91"
@@ -21,18 +22,18 @@ directories = "4.0.1"
 url = { version = "2", features = ["serde"] } 
 
 # GrapgQl
-# juniper={version = "0.15.10", features=["uuid"]}
-# juniper_actix="0.4.0"
 juniper = { git = "https://github.com/graphql-rust/juniper", branch = "master" }
 juniper_actix = { git = "https://github.com/graphql-rust/juniper", branch = "master" }
-surrealdb = "1.0.0-beta.8"
+
+# database
 # surrealdb = "1.0.0-beta.9" will help a lot
+surrealdb = "1.0.0-beta.8"
 derive = { version = "0.5.0", package = "surrealdb-derive" }
 
 # errors
 log="0.4.17"
 env_logger="0.10.0"
-error-stack="0.2.3"
+error-stack="0.3.1"
 colored = "2.0.0"
 
 # generating random url library, usable in graphql

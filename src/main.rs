@@ -17,7 +17,7 @@ mod database;
 mod errors;
 mod graphql;
 mod utils;
-
+mod routes;
 
 #[derive(Serialize)]
 struct ExData {
@@ -92,6 +92,7 @@ async fn main() -> std::io::Result<()> {
             )
             .service(web::resource("/playground").route(web::get().to(graphql::playground_route)))
             .service(web::resource("/graphiql").route(web::get().to(graphql::graphiql_route)))
+            .service(routes::images::get_image_by_name)
     })
     .bind("127.0.0.1:9999")
     .expect("fucked up serwer")
