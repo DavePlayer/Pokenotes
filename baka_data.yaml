@@ -3,16 +3,61 @@ games:
   - id: "06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"
     name: "X"
     pokemons: ["c25358ee-66fd-47c5-a14f-6f92ded5aa28", "28c5889c-3f9a-446a-8b7f-d6eb25b6025a", "99751820-7bcb-4f60-b86b-2703661b2aec"]
-    pokedexes: null
+    pokedexes: [
+      "1416b1bb-1f93-409b-8ffd-b695a9d40edb",
+      "db375135-15b9-4369-a082-d38192c8f96d",
+      "1c659166-e88f-446f-be5c-85a643aacad6",
+      "1d557b0a-3d6b-4ef6-b497-df761fb257d2"
+    ]
     locations: null
   - id: "3bc4d563-efe1-4cc1-8e99-d0c21fee2907"
     name: "Y"
     pokemons: ["2dcac683-7c7b-429c-80ab-29ad4623c103", "c4fff694-b291-42d9-ac42-21bcd7ac1dc1", "f1993937-90b1-4790-bdad-39db6c6b7d30"]
-    pokedexes: null
+    pokedexes: [
+      "d2a68cd0-b690-4e46-ad88-1eaa43bb332b",
+      "789cba82-92a5-46f8-aac4-aad331d7d582",
+      "e9842df0-cd79-4953-8737-bc1d4011fbd4",
+      "805b9103-c494-49b9-ad50-96cd14a53c9d"
+    ]
     locations: null
 genders:
   - id: "c4e82826-c737-4be5-9370-43fbd1e19ea7"
     name: "male"
+  - id: "a5abbbe1-ee35-4ecb-844b-d4b4630c01a3"
+    name: "female"
+  - id: "14dcb984-aea1-415d-a7e7-5ef08de81d53"
+    name: "neutral"
+pokedexes:
+  - id: "1416b1bb-1f93-409b-8ffd-b695a9d40edb"
+    name: "National Pokedex"
+    entries: 
+      - id: "68b2a2af-dcef-46cb-a998-ae7e2318e276"
+        pokemon: "c25358ee-66fd-47c5-a14f-6f92ded5aa28"
+        description: "A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon."
+  - id: "db375135-15b9-4369-a082-d38192c8f96d"
+    name: "Central Kalos Pokédex"
+    entries: []
+  - id: "1c659166-e88f-446f-be5c-85a643aacad6"
+    name: "Coastal Kalos Pokédex"
+    entries: []
+  - id: "1d557b0a-3d6b-4ef6-b497-df761fb257d2"
+    name: "Mountain Kalos Pokédex"
+    entries: []
+  - id: "616a5e4e-b8d1-456b-896e-557685f66576"
+    name: "National Pokedex"
+    entries: 
+      - id: "d2a68cd0-b690-4e46-ad88-1eaa43bb332b"
+        pokemon: "c25358ee-66fd-47c5-a14f-6f92ded5aa28"
+        description: "For some time after its birth, it grows by gaining nourishment from the seed on its back."
+  - id: "789cba82-92a5-46f8-aac4-aad331d7d582"
+    name: "Central Kalos Pokédex"
+    entries: []
+  - id: "e9842df0-cd79-4953-8737-bc1d4011fbd4"
+    name: "Coastal Kalos Pokédex"
+    entries: []
+  - id: "805b9103-c494-49b9-ad50-96cd14a53c9d"
+    name: "Mountain Kalos Pokédex"
+    entries: []
 pokemons:
   - id: "c25358ee-66fd-47c5-a14f-6f92ded5aa28"
     name: bulbasaur
