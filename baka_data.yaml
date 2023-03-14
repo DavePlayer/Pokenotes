@@ -62,6 +62,7 @@ pokemons:
   - id: "c25358ee-66fd-47c5-a14f-6f92ded5aa28"
     name: bulbasaur
     pokedexes: []
+    sprites: ["bulba.png"]
     genders: []
     games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
@@ -84,6 +85,7 @@ pokemons:
   - id: "28c5889c-3f9a-446a-8b7f-d6eb25b6025a"
     name: ivysaur
     genders: []
+    sprites: ["bulba.png"]
     games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
     abilities: []
@@ -105,6 +107,7 @@ pokemons:
   - id: "99751820-7bcb-4f60-b86b-2703661b2aec"
     name: venusaur
     genders: []
+    sprites: ["bulba.png"]
     games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
     abilities: []
@@ -126,6 +129,7 @@ pokemons:
   - id: "e6434689-a8f4-4415-aa54-1b8c9a6d5eb9"
     name: charmander
     genders: []
+    sprites: ["bulba.png"]
     moves: []
     abilities: []
     games_occurrence: ["3bc4d563-efe1-4cc1-8e99-d0c21fee2907"]
@@ -147,6 +151,7 @@ pokemons:
   - id: "2dcac683-7c7b-429c-80ab-29ad4623c103"
     name: charmeleon
     genders: []
+    sprites: ["bulba.png"]
     games_occurrence: ["3bc4d563-efe1-4cc1-8e99-d0c21fee2907"]
     moves: []
     abilities: []
@@ -167,6 +172,7 @@ pokemons:
         name: speed
   - id: "c4fff694-b291-42d9-ac42-21bcd7ac1dc1"
     name: charizard
+    sprites: ["bulba.png"]
     genders: []
     games_occurrence: ["3bc4d563-efe1-4cc1-8e99-d0c21fee2907"]
     moves: []
@@ -189,6 +195,7 @@ pokemons:
   - id: "7c771cdd-1240-4ecb-aaa0-c5c676a7a7f7"
     name: squirtle
     genders: []
+    sprites: ["bulba.png"]
     games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
     abilities: []
@@ -210,6 +217,7 @@ pokemons:
   - id: "a117f5cd-a4e5-4218-b07c-de01f6c5b4ca"
     name: wartortle
     genders: []
+    sprites: ["bulba.png"]
     games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
     abilities: []
@@ -231,6 +239,7 @@ pokemons:
   - id: "0d22aca0-899d-42f9-8321-6c6045df481b"
     name: blastoise
     genders: []
+    sprites: ["bulba.png"]
     moves: []
     abilities: []
     games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
@@ -252,6 +261,7 @@ pokemons:
   - id: "f1993937-90b1-4790-bdad-39db6c6b7d30"
     name: caterpie
     genders: []
+    sprites: ["bulba.png"]
     games_occurrence: ["06e1e6fd-8628-4ab0-8523-eefe07b6bf8b"]
     moves: []
     abilities: []

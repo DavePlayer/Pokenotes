@@ -48,6 +48,7 @@ impl Database {
                 ("name".into(), (*pokemon.name).into()),
                 ("stats".into(), (stats).into()),
                 ("games_occurrence".into(), (pokemon.games_occurrence.iter().map(|s| &**s).collect::<Vec<&str>>()).into()),
+                ("sprites".into(), (pokemon.sprites.iter().map(|s| &**s).collect::<Vec<&str>>()).into())
             ].into();
 
             let vars: BTreeMap<String, Value> = [

@@ -19,6 +19,7 @@ pub struct Pokemon {
     pub id: uuid::Uuid,
     pub name: String,
     pub games_occurrence: Vec<String>,
+    pub sprites: Vec<String>
     // pokedexes: []
     // genders: []
     // moves: []
@@ -38,6 +39,11 @@ impl Pokemon {
     fn id(&self) -> uuid::Uuid {
         self.id.clone()
     }
+    /// pokemon in game sprites
+    fn sprites(&self) -> &Vec<String> {
+        self.sprites.as_ref()
+    }
+
     /// games in which pokemon occours
     async fn games_occurrence(&self, context: &Database) -> Vec<Game> {
         let sql = "SELECT id, name, pokemons FROM games WHERE $array contains id";

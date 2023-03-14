@@ -7,7 +7,7 @@ use super::Database;
 impl Database {
     pub async fn get_all_pokemon(&self) -> Result<Vec<Pokemon>, AnyError> {
         
-        let sql = "SELECT id, name, games_occurrence FROM pokemons";
+        let sql = "SELECT id, name, games_occurrence, sprites FROM pokemons";
         let results = self.connection
             .execute(sql, &self.session, None, false)
             .await
