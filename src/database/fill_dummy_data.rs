@@ -38,6 +38,7 @@ impl Database {
         let baka_data: Bakadata = serde_yaml::from_str(&baka_data_string).unwrap();
         let games = &baka_data.games;
         let pokemons = &baka_data.pokemons;
+        let pokedexes = &baka_data.pokedexes;
 
         // adding dummy data pokemons to database
         for pokemon in pokemons {
@@ -97,6 +98,60 @@ impl Database {
                 .change_context(AnyError::DatabaseError(DatabaseError::ExecuteSQL("error when executing sql: ".into(), sql.into())))
                 .attach_printable(format!["error when executing sql: {}", sql])?;
             }
+        }
+        for pokemon in pokemons {
+            for id in &pokemon.games_occurrence {
+                let sql = r#"UPDATE type::thing("pokemons", $id) SET games_occurrence = [type::thing("games", $gameId)]"#;
+                let vars: BTreeMap<String, Value> = [
+                    ("id".into(), pokemon.id.to_string().into()),
+                    ("gameId".into(), id.to_string().into())
+                ].into();
+
+                let _response = connection.execute(sql, &session, Some(vars), false)
+                .await
+                .into_report()
+                .change_context(AnyError::DatabaseError(DatabaseError::ExecuteSQL("error when executing sql: ".into(), sql.into())))
+                .attach_printable(format!["error when executing sql: {}", sql])?;
+            }
+        }
+
+        for pokedex in pokedexes {
+            let sql = r#"CREATE type::thing("pokedexes", $id) CONTENT $data"#;
+            let data: BTreeMap<String, Value> = [
+                ("name".into(), (*pokedex.name).into())
+            ].into();
+
+            let vars: BTreeMap<String, Value> = [
+                ("id".into(), pokedex.id.to_string().into()),
+                ("data".into(), data.into())
+            ].into();
+
+            let _response = connection.execute(sql, &session, Some(vars), false)
+            .await
+            .into_report()
+            .change_context(AnyError::DatabaseError(DatabaseError::ExecuteSQL("error when executing sql: ".into(), sql.into())))
+            .attach_printable(format!["error when executing sql: {}", sql])?;
+
+            // filling entries to db
+            for entry in &pokedex.entries {
+                println!("{}: {:?}", pokedex.name, entry);
+            }
+
+
+            // linking pokedex entries to pokemons in database
+            // for id in game.pokemons.iter() {
+            //     let sql = r#"UPDATE type::thing("games", $id) SET pokemons += [type::thing("pokemons", $pokemonId)]"#;
+            //     let vars: BTreeMap<String, Value> = [
+            //         ("id".into(), game.id.to_string().into()),
+            //         ("pokemonId".into(), id.to_string().into())
+            //     ].into();
+
+            //     let _response = connection.execute(sql, &session, Some(vars), false)
+            //     .await
+            //     .into_report()
+            //     .change_context(AnyError::DatabaseError(DatabaseError::ExecuteSQL("error when executing sql: ".into(), sql.into())))
+            //     .attach_printable(format!["error when executing sql: {}", sql])?;
+            // }
         }
         for pokemon in pokemons {
             for id in &pokemon.games_occurrence {

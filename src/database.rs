@@ -13,6 +13,7 @@ mod fill_dummy_data;
 mod reset_db;
 mod get_all_games;
 mod get_all_pokemons;
+mod get_all_pokedexes;
 
 // #[derive(Default)]
 pub struct Database {

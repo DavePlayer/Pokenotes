@@ -3,7 +3,8 @@ use uuid::Uuid;
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Data {
    pub games: Vec<GameYaml> ,
-   pub pokemons: Vec<PokemonYaml>
+   pub pokemons: Vec<PokemonYaml>,
+   pub pokedexes: Vec<PokedexYaml>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -27,6 +28,19 @@ pub struct PokemonYaml {
 pub struct StatYaml {
     pub base_stat: u32,
     pub name: String
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct PokedexYaml {
+    pub id: String,
+    pub name: String,
+    pub entries: Vec<PokedexEntryYaml>
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct PokedexEntryYaml {
+    pub id: String,
+    pub pokemon: String,
+    pub description: String,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

@@ -1,8 +1,9 @@
-use crate::graphql::Database;
+use crate::{graphql::Database};
 use juniper::{graphql_object, EmptyMutation, EmptySubscription, RootNode};
 
 pub mod pokemon;
 pub mod game;
+pub mod pokedex;
 
 /// Pokemon game object
 pub struct Query;
@@ -19,6 +20,14 @@ impl Query {
     /// games array
     pub async fn games(context: &Database) -> Vec<game::Game> {
         match context.get_all_games().await {
+            Ok(val) => val,
+            Err(err) => {eprintln!("{:?}",err);return vec![]},
+        }
+    }
+    
+    #[allow(unused)]
+    pub async fn pokedexes(context: &Database) -> Vec<pokedex::Pokedex> {
+        match context.get_all_pokedexes().await {
             Ok(val) => val,
             Err(err) => {eprintln!("{:?}",err);return vec![]},
         }
