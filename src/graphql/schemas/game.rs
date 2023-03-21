@@ -24,12 +24,12 @@ pub struct Game {
 impl Game {
     /// pokemons which occour in specific game
     async fn pokemons(&self, context: &Database) -> Vec<pokemon::Pokemon> {
-        let sql = "SELECT id, name, games_occurrence from pokemons where $array contains id";
+        let sql = "SELECT id, name, sprites, games_occurrence from pokemons where $array contains id";
         let pokemons: Vec<&str> = self.pokemons.iter().map(|s| s.as_ref()).collect();
         let vars: BTreeMap<String, Value> = [
             ("array".into(), pokemons.into()),
         ].into();
-        let Ok(results) = context.connection
+        let results = match context.connection
             .execute(sql, &context.session, Some(vars), false)
             .await
             .into_report()
@@ -37,7 +37,13 @@ impl Game {
             .change_context(AnyError::DatabaseError(errors::DatabaseError::ExecuteSQL(
                 "couldn't CREATE pokemon in table".into(),
                 sql.to_string(),
-            ))) else {println!("error when executing sql");return vec![];};
+            ))){
+                Ok(data) => data,
+                Err(err) => {
+                    println!("{:?}", err);
+                    vec![]
+                }
+            };
 
         // Database::print_surreal_response(&results).unwrap();
 
